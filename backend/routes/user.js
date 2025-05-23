@@ -15,9 +15,7 @@ router.post('/signup', async (req, res) => {
 
     const newUser = new User({ username, password });
     await newUser.save();
-
-    const token = jwt.sign({ userID: newUser._id }, SECRET, { expiresIn: '1h' });
-    res.json({ message: "User created successfully", token });
+    res.json({ message: "User created successfully"});
   } catch (error) {
     res.status(500).json({ message: "Error creating user", error });
   }
