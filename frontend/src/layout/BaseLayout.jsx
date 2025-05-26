@@ -15,7 +15,7 @@ export default function BaseLayout() {
         </div>
       </header>
 
-      <main className="flex h-screen overflow-auto no-scrollbar">
+      <main className=" h-screen overflow-auto no-scrollbar">
         <Outlet />
       </main>
 
