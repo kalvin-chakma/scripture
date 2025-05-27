@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Settings, Users } from 'lucide-react';
-import NoteModal from './NodeModal';
+import NoteModal from './NoteModal';
 
 export default function Sidebar() {
   const [showNoteModal, setShowNoteModal] = useState(false);

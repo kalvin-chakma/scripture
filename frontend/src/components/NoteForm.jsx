@@ -19,7 +19,7 @@ export default function NoteForm({ onClose }) {
 
 
     const route = editorRoutes[noteType] || '/markdown-editor';
-    navigate(route);
+    navigate(route,{state: {title}});
   };
 
   return (

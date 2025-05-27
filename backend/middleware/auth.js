@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 
-const SECRET = process.env.SECRET || "defaultSecret";
+const SECRET = process.env.JWT_SECRET || "your_jwt_secret";
 
 const authenticateJWT = (req, res, next) => {
   const authHeader = req.headers.authorization;
@@ -8,20 +8,14 @@ const authenticateJWT = (req, res, next) => {
   if (authHeader) {
     const token = authHeader.split(" ")[1];
 
-    jwt.verify(token, SECRET, (err, decoded) => {
-      if (err) {
-        return res.status(403).json({ message: "Forbidden: Invalid token" });
-      }
-
-      req.userID = decoded.userID;
+    jwt.verify(token, SECRET, (err, user) => {
+      if (err) return res.sendStatus(403);
+      req.user_id = user.userID; 
       next();
     });
   } else {
-    return res.status(401).json({ message: "Unauthorized: No token provided" });
+    res.sendStatus(401);
   }
 };
 
-module.exports = {
-  authenticateJWT,
-  SECRET,
-};
+module.exports = { authenticateJWT, SECRET };

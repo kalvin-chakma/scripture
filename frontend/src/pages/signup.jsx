@@ -1,4 +1,3 @@
-// src/components/SignUp.jsx
 import { useState, useEffect } from 'react';
 import useUserStore from '../store/useUserStore';
 

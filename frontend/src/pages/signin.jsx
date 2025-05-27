@@ -6,7 +6,7 @@ const SignIn = () => {
   const { signIn, error, clearError } = useUserStore();
 
   useEffect(() => {
-    clearError(); // Clear error when component mounts or username/password changes
+    clearError(); 
   }, [form.username, form.password, clearError]);
 
   const handleSubmit = async (e) => {
