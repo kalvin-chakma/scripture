@@ -29,6 +29,7 @@
     "@editorjs/simple-image": "^1.6.0",
     "@editorjs/table": "^2.4.5",
     "@editorjs/warning": "^1.4.1",
+    "@uiw/react-markdown-editor": "^6.1.4",
     "axios": "^1.9.0",
     "lucide-react": "^0.509.0",
     "react": "^19.1.0",
