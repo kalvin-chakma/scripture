@@ -16,6 +16,7 @@ apiClient.interceptors.request.use((config) => {
   return config;
 });
 
+
 export const login = (credentials) => apiClient.post('/user/signin', credentials);
 export const signup = (credentials) => apiClient.post('/user/signup', credentials);
 export const saveNote = (data) => apiClient.post('/save', data);

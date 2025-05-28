@@ -8,8 +8,7 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { atomOneDark } from "react-syntax-highlighter/dist/esm/styles/hljs";
 
 // Import the table components
-import * as MarkdownComponents from './markdownComponents';
-
+import * as MarkdownComponents from "./markdownComponents";
 
 export default function MarkdownViewer({ content }) {
   const [copied, setCopied] = useState(null);
@@ -21,7 +20,7 @@ export default function MarkdownViewer({ content }) {
   };
 
   return (
-    <div className="w-full max-w-4xl px-6 py-6 prose prose-lg text-gray-800">
+    <div className="w-full max-w-4xl px-6 prose prose-lg text-gray-800">
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         rehypePlugins={[rehypeRaw]}

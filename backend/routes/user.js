@@ -7,30 +7,34 @@ const { SECRET } = require("../middleware/auth");
 const router = express.Router();
 
 // User signup
-router.post('/signup', async (req, res) => {
+router.post("/signup", async (req, res) => {
   const { username, password } = req.body;
 
   try {
-    const existingUser = await User.findOne({ username });
-    if (existingUser) {
-      return res.status(403).json({ message: 'User already exists' });
+    if (!username || !password) {
+      return res
+        .status(400)
+        .json({ message: "Username and password are required" });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10); // Hash password with salt rounds = 10
+    const existingUser = await User.findOne({ username });
+    if (existingUser) {
+      return res.status(403).json({ message: "User already exists" });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = new User({ username, password: hashedPassword });
     await newUser.save();
 
-    const token = jwt.sign({ userID: newUser._id }, SECRET, { expiresIn: '1h' });
-
-    res.json({ message: "User created successfully" });
+    res.json({ message: "User created successfully", success });
   } catch (error) {
     res.status(500).json({ message: "Error creating user", error });
   }
 });
 
 // User signin
-router.post('/signin', async (req, res) => {
+router.post("/signin", async (req, res) => {
   const { username, password } = req.body;
 
   try {
@@ -44,7 +48,7 @@ router.post('/signin', async (req, res) => {
       return res.status(401).json({ message: "Invalid username or password" });
     }
 
-    const token = jwt.sign({ userID: user._id }, SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ userID: user._id }, SECRET, { expiresIn: "1h" });
 
     res.json({ message: "Logged in successfully", token });
   } catch (error) {

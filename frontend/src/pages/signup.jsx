@@ -1,9 +1,11 @@
-import { useState, useEffect } from 'react';
-import useUserStore from '../store/useUserStore';
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import useUserStore from "../store/useUserStore";
 
 const SignUp = () => {
-  const [form, setForm] = useState({ username: '', password: '' });
+  const [form, setForm] = useState({ username: "", password: "" });
   const { signUp, error, clearError } = useUserStore();
+  const navigate = useNavigate();
 
   useEffect(() => {
     clearError();
@@ -13,11 +15,17 @@ const SignUp = () => {
     e.preventDefault();
     const result = await signUp(form);
     alert(result.message);
+    if (result.success) {
+      navigate("/user/signin");
+    }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <form onSubmit={handleSubmit} className="bg-white p-8 rounded shadow-md space-y-4 w-96">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white p-8 rounded shadow-md space-y-4 w-96"
+      >
         <h2 className="text-2xl font-bold text-center">Sign Up</h2>
         <input
           type="email"
