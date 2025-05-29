@@ -23,13 +23,17 @@ router.post("/signup", async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-
     const newUser = new User({ username, password: hashedPassword });
     await newUser.save();
 
-    res.json({ message: "User created successfully", success });
+    res
+      .status(201)
+      .json({ message: "User created successfully", success: true });
   } catch (error) {
-    res.status(500).json({ message: "Error creating user", error });
+    console.error("Signup error:", error.message);
+    res
+      .status(500)
+      .json({ message: "Error creating user", error: error.message });
   }
 });
 
@@ -52,7 +56,7 @@ router.post("/signin", async (req, res) => {
 
     res.json({ message: "Logged in successfully", token });
   } catch (error) {
-    res.status(500).json({ message: "Error signing in", error });
+    res.status(500).json({ message: "Error signing in", error: error.message });
   }
 });
 

@@ -27,10 +27,10 @@ const useUserStore = create((set) => ({
   signUp: async ({ username, password }) => {
     try {
       const res = await signup({ username, password });
-
       set({ error: "" });
       return { success: true, message: res.data.message || "User registered" };
     } catch (err) {
+      console.log("Signup error:", err.response?.data);
       const message = err.response?.data?.message || "Signup failed";
       set({ error: message });
       return { success: false, message: message };

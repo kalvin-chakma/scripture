@@ -31,6 +31,7 @@ const SignUp = () => {
           type="email"
           placeholder="Email"
           className="w-full p-2 border rounded"
+          value={form.username}
           onChange={(e) => setForm({ ...form, username: e.target.value })}
           required
         />
@@ -38,6 +39,7 @@ const SignUp = () => {
           type="password"
           placeholder="Password"
           className="w-full p-2 border rounded"
+          value={form.password}
           onChange={(e) => setForm({ ...form, password: e.target.value })}
           required
         />
