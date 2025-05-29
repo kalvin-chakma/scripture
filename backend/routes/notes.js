@@ -5,7 +5,7 @@ const { authenticateJWT } = require("../middleware/auth");
 const router = express.Router();
 
 router.post("/save", authenticateJWT, async (req, res) => {
-  const { title, content } = req.body;
+  const { title, content, noteType } = req.body;
 
   if (!title || !content) {
     return res.status(400).json({ message: "Title and content are required" });
@@ -15,6 +15,7 @@ router.post("/save", authenticateJWT, async (req, res) => {
     const newNote = new Note({
       user_id: req.user_id,
       title,
+      noteType: noteType,
       content,
     });
 
@@ -24,7 +25,6 @@ router.post("/save", authenticateJWT, async (req, res) => {
     res.status(500).json({ message: "Failed to save note", error });
   }
 });
-
 
 router.get("/my-notes", authenticateJWT, async (req, res) => {
   try {

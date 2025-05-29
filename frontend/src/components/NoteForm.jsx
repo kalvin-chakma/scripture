@@ -1,25 +1,23 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function NoteForm({ onClose }) {
-  const [noteType, setNoteType] = useState('markdown');
-  const [title, setTitle] = useState('');
+  const [noteType, setNoteType] = useState("markdown");
+  const [title, setTitle] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log({ noteType, title });
     onClose();
 
     const editorRoutes = {
-      markdown: '/markdown-editor',
-      general: '/general-editor',
-      todo: '/todo-editor',
+      markdown: "/markdown-editor",
+      general: "/general-editor",
+      todo: "/todo-editor",
     };
 
-
-    const route = editorRoutes[noteType] || '/markdown-editor';
-    navigate(route,{state: {title}});
+    const route = editorRoutes[noteType] || "";
+    navigate(route, { state: { title, noteType } });
   };
 
   return (

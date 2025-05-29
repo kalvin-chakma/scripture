@@ -4,15 +4,13 @@ import MarkdownEditor from "@uiw/react-markdown-editor";
 import axios from "axios";
 
 const MarkdownNoteEditor = () => {
-  const location = useLocation();
   const navigate = useNavigate();
-  const initialTitle = location.state?.title || "Untitled";
+  const location = useLocation();
+  const { title, noteType } = location.state || {};
 
   const [markdown, setMarkdown] = useState(`# Write your Markdown`);
-  const [title] = useState(initialTitle);
   const [saving, setSaving] = useState(false);
 
-  // Set default theme
   document.documentElement.setAttribute("data-color-mode", "light");
 
   const saveNoteHandler = async () => {
@@ -22,7 +20,7 @@ const MarkdownNoteEditor = () => {
 
       const response = await axios.post(
         "http://localhost:3001/note/save",
-        { title, content: markdown },
+        { title, content: markdown, noteType },
         {
           headers: {
             "Content-Type": "application/json",
@@ -30,11 +28,11 @@ const MarkdownNoteEditor = () => {
           },
         }
       );
-
+      console.log(`application/json`);
       alert("Note saved!");
-      console.log("Saved note:", response.data);
+      // console.log("Saved note:", response.data);
     } catch (error) {
-      console.error("Save error:", error.response?.data || error.message);
+      // console.error("Save error:", error.response?.data || error.message);
       alert("Error saving note.");
     } finally {
       setSaving(false);
@@ -42,7 +40,7 @@ const MarkdownNoteEditor = () => {
   };
 
   const goBack = () => {
-    navigate(-1); // Go back to previous page
+    navigate(-1);
   };
 
   return (

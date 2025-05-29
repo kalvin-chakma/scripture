@@ -1,24 +1,23 @@
-import { useEffect, useState } from 'react';
-import ContentEditor from '../components/general-editor/contentEditor';
+import { useEffect, useState } from "react";
+import ContentEditor from "../components/general-editor/contentEditor";
 
 const GeneralNoteEditor = () => {
   const [editorData, setEditorData] = useState({
     time: new Date().getTime(),
     blocks: [
       {
-        type: 'header',
+        type: "header",
         data: {
-          text: 'Start writing your note...',
-          level: 2,  // Make sure this matches one of your available levels
+          text: "Start writing your note...",
+          level: 2,
         },
       },
     ],
   });
 
-
   const handleChange = (data) => {
     setEditorData(data);
-    console.log('Editor data changed:', data);
+    console.log("Editor data changed:", data);
   };
 
   return (

@@ -8,6 +8,7 @@ import MarkdownNoteEditor from "../note-editor/MarkdownNoteEditor";
 import GeneralNoteEditor from "../note-editor/GeneralNoteEditor";
 import TodoNoteEditor from "../note-editor/TodoNoteEditor";
 import ProtectedRoute from "./protectedRoute";
+import NoteDetails from "../pages/NoteDetails";
 
 export const routes = (
   <>
@@ -38,6 +39,14 @@ export const routes = (
         element={
           <ProtectedRoute>
             <TodoNoteEditor />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/note-details/:title"
+        element={
+          <ProtectedRoute>
+            <NoteDetails />
           </ProtectedRoute>
         }
       />
