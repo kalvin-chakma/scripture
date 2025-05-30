@@ -28,7 +28,6 @@ const MarkdownNoteEditor = () => {
           },
         }
       );
-      console.log(`application/json`);
       alert("Note saved!");
       // console.log("Saved note:", response.data);
     } catch (error) {

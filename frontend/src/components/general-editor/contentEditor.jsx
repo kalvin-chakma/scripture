@@ -1,6 +1,6 @@
-import { useEffect, useRef, memo } from 'react';
-import EditorJS from '@editorjs/editorjs';
-import tools from './tools';
+import { useEffect, useRef, memo } from "react";
+import EditorJS from "@editorjs/editorjs";
+import tools from "./tools";
 
 const ContentEditor = memo(({ data, onChange, editorBlock }) => {
   const editorRef = useRef(null);
@@ -28,9 +28,14 @@ const ContentEditor = memo(({ data, onChange, editorBlock }) => {
         editorRef.current = null;
       }
     };
-  }, [editorBlock]); // Added editorBlock as dependency
+  }, [editorBlock]);
 
-  return <div id={editorBlock} className="w-full min-h-64 border border-gray-300 rounded p-4" />;
+  return (
+    <div
+      id={editorBlock}
+      className="w-full min-h-64 border border-gray-300 rounded p-4"
+    />
+  );
 });
 
 export default ContentEditor;
