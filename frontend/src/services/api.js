@@ -19,5 +19,5 @@ export const login = (credentials) =>
 export const signup = (credentials) =>
   apiClient.post("/user/signup", credentials);
 
-export const saveNote = (data) => apiClient.post("/save", data);
+export const saveNote = (data) => apiClient.post("/note/save", data);
 export const getNote = (data) => apiClient.get("/note/my-notes", data);

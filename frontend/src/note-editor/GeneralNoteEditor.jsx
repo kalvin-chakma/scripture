@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";
 import ContentEditor from "../components/general-editor/contentEditor";
-
+import { saveNote } from "../services/api";
 const GeneralNoteEditor = () => {
   const [editorData, setEditorData] = useState({
     time: new Date().getTime(),
@@ -25,35 +24,22 @@ const GeneralNoteEditor = () => {
 
   const handleChange = (data) => {
     setEditorData(data);
-    console.log("Editor data changed:", data);
   };
 
   const handleSave = async () => {
     try {
       setSaving(true);
 
-      const token = localStorage.getItem("token");
       const contentString = JSON.stringify(editorData);
 
       const payload = {
         title: title,
-        noteType: noteType,
         content: contentString,
+        noteType: noteType,
       };
 
-      const response = await axios.post(
-        "http://localhost:3001/note/save",
-        payload,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            ...(token && { Authorization: `Bearer ${token}` }),
-          },
-        }
-      );
-
+      await saveNote(payload);
       alert("Note saved!");
-      console.log("Note saved:", response.data);
       navigate("/");
     } catch (error) {
       console.error(
@@ -65,22 +51,19 @@ const GeneralNoteEditor = () => {
       setSaving(false);
     }
   };
-
+  const goBack = () => navigate(-1);
   return (
     <div className="max-w-4xl mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-4 flex items-center">
-        <span className="mr-2">📝</span> My Rich Note Editor
-      </h1>
-
-      <div className="bg-white rounded-lg shadow-md p-4">
-        <ContentEditor
-          data={editorData}
-          onChange={handleChange}
-          editorBlock="editorjs-container"
-        />
-      </div>
-
-      <div className="mt-4 flex justify-end">
+      <div className="flex justify-between items-center">
+        <button
+          onClick={goBack}
+          className="bg-gray-300 hover:bg-gray-400 text-black px-4 p-1 rounded-md"
+        >
+          Back
+        </button>
+        <h1 className="text-2xl font-bold mb-4 flex items-center">
+          <span className="mr-2">📝</span> My Rich Note Editor
+        </h1>
         <button
           onClick={handleSave}
           disabled={saving}
@@ -92,6 +75,13 @@ const GeneralNoteEditor = () => {
         >
           {saving ? "Saving..." : "Save Note"}
         </button>
+      </div>
+      <div className="bg-white rounded-lg shadow-md p-4">
+        <ContentEditor
+          data={editorData}
+          onChange={handleChange}
+          editorBlock="editorjs-container"
+        />
       </div>
     </div>
   );

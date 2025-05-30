@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import MarkdownEditor from "@uiw/react-markdown-editor";
-import axios from "axios";
+import { saveNote } from "../services/api";
 
 const MarkdownNoteEditor = () => {
   const navigate = useNavigate();
@@ -16,31 +16,28 @@ const MarkdownNoteEditor = () => {
   const saveNoteHandler = async () => {
     try {
       setSaving(true);
-      const token = localStorage.getItem("token");
 
-      const response = await axios.post(
-        "http://localhost:3001/note/save",
-        { title, content: markdown, noteType },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            ...(token && { Authorization: `Bearer ${token}` }),
-          },
-        }
-      );
+      const payload = {
+        title: title,
+        content: markdown,
+        noteType: noteType,
+      };
+
+      await saveNote(payload);
       alert("Note saved!");
-      // console.log("Saved note:", response.data);
+      navigate("/");
     } catch (error) {
-      // console.error("Save error:", error.response?.data || error.message);
+      console.error(
+        "Error saving note:",
+        error.response?.data || error.message
+      );
       alert("Error saving note.");
     } finally {
       setSaving(false);
     }
   };
 
-  const goBack = () => {
-    navigate(-1);
-  };
+  const goBack = () => navigate(-1);
 
   return (
     <div className="p-2 mx-auto">
