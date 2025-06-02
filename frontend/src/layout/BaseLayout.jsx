@@ -3,7 +3,7 @@ import { ChevronDown, MoreHorizontal, Share2 } from "lucide-react";
 
 export default function BaseLayout() {
   return (
-    <div className="flex flex-col text-black overflow-x-hidden w-full no-scrollbar">
+    <div className="flex flex-col text-black overflow-x-hidden w-full h-screen no-scrollbar">
       <header className="h-16 border-b border-gray-200 flex items-center justify-between px-4 w-full">
         <div className="flex items-center">
           <h1 className="text-2xl font-bold">SCRIPTURE</h1>
@@ -15,7 +15,7 @@ export default function BaseLayout() {
         </div>
       </header>
 
-      <main className=" h-screen overflow-auto no-scrollbar">
+      <main className="h-full overflow-auto no-scrollbar">
         <Outlet />
       </main>
 

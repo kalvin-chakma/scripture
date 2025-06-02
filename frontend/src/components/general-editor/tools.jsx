@@ -18,7 +18,7 @@ const tools = {
     class: Header,
     inlineToolbar: true,
     config: {
-      placeholder: "Enter a header",
+      placeholder: "Start writing your note...",
       levels: [1, 2, 3, 4],
       defaultLevel: 2,
     },

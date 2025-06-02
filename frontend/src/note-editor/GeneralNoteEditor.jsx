@@ -9,7 +9,7 @@ const GeneralNoteEditor = () => {
       {
         type: "header",
         data: {
-          text: "Start writing your note...",
+          text: "",
           level: 2,
         },
       },
@@ -53,15 +53,15 @@ const GeneralNoteEditor = () => {
   };
   const goBack = () => navigate(-1);
   return (
-    <div className="max-w-4xl mx-auto p-6">
-      <div className="flex justify-between items-center">
+    <div className="max-w-5xl mx-auto p-5">
+      <div className="flex justify-between items-center px-5">
         <button
           onClick={goBack}
           className="bg-gray-300 hover:bg-gray-400 text-black px-4 p-1 rounded-md"
         >
           Back
         </button>
-        <h1 className="text-2xl font-bold mb-4 flex items-center">
+        <h1 className="text-2xl font-bold flex items-center">
           <span className="mr-2">📝</span> My Rich Note Editor
         </h1>
         <button
@@ -69,8 +69,8 @@ const GeneralNoteEditor = () => {
           disabled={saving}
           className={`px-4 py-2 rounded text-white ${
             saving
-              ? "bg-gray-400 cursor-not-allowed"
-              : "bg-blue-600 hover:bg-blue-700"
+              ? "bg-green-500 cursor-not-allowed"
+              : "bg-green-600 hover:bg-green-700"
           }`}
         >
           {saving ? "Saving..." : "Save Note"}

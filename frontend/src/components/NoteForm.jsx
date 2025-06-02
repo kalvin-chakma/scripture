@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function NoteForm({ onClose }) {
   const [noteType, setNoteType] = useState("markdown");
-  const [title, setTitle] = useState("");
+  const [title, setTitle] = useState("Untitled");
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
