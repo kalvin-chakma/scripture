@@ -16,7 +16,7 @@ const SignIn = () => {
     const result = await signIn(form);
     alert(result.message);
     if (result.success) {
-      navigate("/");
+      navigate("/home");
     }
   };
 

@@ -40,7 +40,7 @@ const GeneralNoteEditor = () => {
 
       await saveNote(payload);
       alert("Note saved!");
-      navigate("/");
+      navigate("/home");
     } catch (error) {
       console.error(
         "Failed to save note:",

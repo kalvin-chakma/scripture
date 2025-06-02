@@ -1,4 +1,4 @@
-import { Route } from "react-router-dom";
+import { Navigate, Route } from "react-router-dom";
 import Home from "../pages/Home";
 import SignIn from "../pages/signin";
 import SignUp from "../pages/signup";
@@ -13,9 +13,10 @@ import NoteDetails from "../pages/NoteDetails";
 export const routes = (
   <>
     <Route element={<BaseLayout />}>
-      <Route path="/" element={<Home />} />
+      <Route path="/" element={<Navigate to="/user/signup" replace />} />
       <Route path="/user/signup" element={<SignUp />} />
       <Route path="/user/signin" element={<SignIn />} />
+      <Route path="/home" element={<Home />} />
     </Route>
     <Route element={<SimpleLayout />}>
       <Route

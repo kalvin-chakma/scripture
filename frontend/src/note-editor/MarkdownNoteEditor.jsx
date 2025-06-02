@@ -25,7 +25,7 @@ const MarkdownNoteEditor = () => {
 
       await saveNote(payload);
       alert("Note saved!");
-      navigate("/");
+      navigate("/home");
     } catch (error) {
       console.error(
         "Error saving note:",

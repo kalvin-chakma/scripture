@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getNote } from "../services/api";
 import MarkdownEditor from "@uiw/react-markdown-editor";
+import ContentEditor from "../components/general-editor/contentEditor";
 
 export default function NoteDetails() {
   document.documentElement.setAttribute("data-color-mode", "light");
@@ -50,8 +51,15 @@ export default function NoteDetails() {
           </div>
         </div>
       </div>
-
-      <MarkdownEditor.Markdown source={note.content} />
+      {note.noteType === "markdown" ? (
+        <MarkdownEditor.Markdown source={note.content} />
+      ) : (
+        <ContentEditor
+          data={JSON.parse(note.content)}
+          onChange={() => {}}
+          editorBlock="editorjs-container"
+        />
+      )}
     </div>
   );
 }

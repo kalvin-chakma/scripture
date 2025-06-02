@@ -4,6 +4,12 @@ import Sidebar from "../components/Sidebar";
 import { getNote } from "../services/api";
 
 export default function Home() {
+  // Initialize order from localStorage or empty array (fixed order)
+  const [noteTypeOrder, setNoteTypeOrder] = useState(() => {
+    const stored = localStorage.getItem("noteTypeOrder");
+    return stored ? JSON.parse(stored) : [];
+  });
+
   const [columns, setColumns] = useState([]);
 
   useEffect(() => {
@@ -11,19 +17,18 @@ export default function Home() {
       try {
         const { data } = await getNote();
         const groupedNotes = {};
-        const storedOrder =
-          JSON.parse(localStorage.getItem("noteTypeOrder")) || [];
 
-        // Gather new noteTypes and add them to the storedOrder only if not already present
+        // Copy current order state
+        const order = [...noteTypeOrder];
+
+        // Find all noteTypes in the fetched data
         data.notes.forEach(({ noteType }) => {
           const type = noteType || "Untitled";
-          if (!storedOrder.includes(type)) {
-            storedOrder.push(type);
+          // Only add new types at the end of order array (never reorder)
+          if (!order.includes(type)) {
+            order.push(type);
           }
         });
-
-        // Save updated order back to localStorage
-        localStorage.setItem("noteTypeOrder", JSON.stringify(storedOrder));
 
         // Group notes by noteType
         data.notes.forEach(({ _id, title, content, noteType }) => {
@@ -35,11 +40,12 @@ export default function Home() {
               notes: [],
             };
           }
+          // Add new notes to the front of notes array
           groupedNotes[type].notes.unshift({ id: _id, title, content });
         });
 
-        // Create ordered columns
-        const orderedColumns = storedOrder.map(
+        // Create columns in fixed order
+        const orderedColumns = order.map(
           (type) =>
             groupedNotes[type] || {
               id: type,
@@ -48,6 +54,12 @@ export default function Home() {
             }
         );
 
+        // Update state only if order changed to avoid infinite loops
+        if (JSON.stringify(order) !== JSON.stringify(noteTypeOrder)) {
+          setNoteTypeOrder(order);
+          localStorage.setItem("noteTypeOrder", JSON.stringify(order));
+        }
+
         setColumns(orderedColumns);
       } catch (err) {
         console.error("Error fetching notes:", err);
@@ -55,7 +67,7 @@ export default function Home() {
     };
 
     fetchNotes();
-  }, []);
+  }, [noteTypeOrder]);
 
   return (
     <div className="flex h-full text-gray-800 font-sans no-scrollbar">
