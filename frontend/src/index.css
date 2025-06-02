@@ -28,3 +28,8 @@
 .codex-editor h4 {
   @apply text-xl font-bold;
 }
+body .w-md-editor-text-pre > code,
+body .w-md-editor-text-input {
+  font-size: 50px !important;
+  line-height: 50px !important;
+}

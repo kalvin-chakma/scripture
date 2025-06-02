@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { Settings, Users } from 'lucide-react';
-import NoteModal from './NoteModal';
+import { useState } from "react";
+import { Settings, Users } from "lucide-react";
+import NoteModal from "./NoteModal";
 
 export default function Sidebar() {
   const [showNoteModal, setShowNoteModal] = useState(false);
@@ -12,7 +12,7 @@ export default function Sidebar() {
         <div className="p-5 font-medium text-lg">Projects</div>
         <div className="flex flex-col px-5">
           <button
-            className="mb-2 flex items-center justify-center text-gray-500 p-2 hover:bg-gray-100 rounded cursor-pointer"
+            className="mb-2 flex items-center justify-center p-2 border hover:bg-gray-100 rounded cursor-pointer"
             onClick={() => setShowNoteModal(true)}
           >
             Note

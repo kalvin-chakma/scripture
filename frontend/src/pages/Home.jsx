@@ -13,7 +13,6 @@ export default function Home() {
         const groupedNotes = {};
         const storedOrder =
           JSON.parse(localStorage.getItem("noteTypeOrder")) || [];
-        console.log("storedOrder", storedOrder);
 
         // Gather new noteTypes and add them to the storedOrder only if not already present
         data.notes.forEach(({ noteType }) => {
@@ -69,15 +68,19 @@ export default function Home() {
               key={col.id}
               className="w-72 flex-shrink-0 flex flex-col bg-gray-50 rounded-lg shadow-sm"
             >
-              <div className="p-3 border-b border-gray-100">
-                <h3 className="font-medium text-sm">{col.noteType}</h3>
+              <div className="p-3 border-b border-gray-100 ">
+                <h3 className="uppercase font-medium text-sm text-center">
+                  {col.noteType}
+                </h3>
               </div>
               <div className="flex flex-col gap-2 p-2 overflow-auto no-scrollbar">
                 {col.notes.map((note) => (
                   <Link
                     key={note.id}
-                    to={`/note-details/${encodeURIComponent(note.title)}`}
-                    className="p-3 bg-white border border-gray-200 rounded-md shadow-sm cursor-pointer hover:shadow-md transition-shadow"
+                    to={`/note-details/${note.id}/${encodeURIComponent(
+                      note.title
+                    )}`}
+                    className="p-3 bg-white border border-gray-200 rounded-md shadow-sm text-center cursor-pointer hover:shadow-md transition-shadow"
                   >
                     {note.title}
                   </Link>

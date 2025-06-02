@@ -55,7 +55,10 @@ const MarkdownNoteEditor = () => {
         <MarkdownEditor
           value={markdown}
           height="80vh"
+          preview="live"
+          visible={true}
           onChange={(value) => setMarkdown(value)}
+          style={{ fontSize: "16px" }}
         />
       </div>
 

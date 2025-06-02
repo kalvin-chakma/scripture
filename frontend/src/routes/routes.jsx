@@ -43,7 +43,7 @@ export const routes = (
         }
       />
       <Route
-        path="/note-details/:title"
+        path="/note-details/:id/:title"
         element={
           <ProtectedRoute>
             <NoteDetails />
