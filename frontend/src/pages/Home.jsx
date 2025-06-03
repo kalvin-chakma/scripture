@@ -70,7 +70,7 @@ export default function Home() {
   }, [noteTypeOrder]);
 
   return (
-    <div className="flex h-full text-gray-800 font-sans no-scrollbar">
+    <div className="flex h-full text-gray-800 font-sans no-scrollbar ">
       <Sidebar className="bg-black" />
 
       <div className="flex flex-col flex-1 p-6">
@@ -78,21 +78,21 @@ export default function Home() {
           {columns.map((col) => (
             <div
               key={col.id}
-              className="w-72 flex-shrink-0 flex flex-col bg-gray-50 rounded-lg shadow-sm"
+              className="w-72 flex-shrink-0 flex flex-col bg-gray-50 rounded-lg shadow-sm dark:bg-neutral-900 dark:text-gray-300"
             >
               <div className="p-3 border-b border-gray-100 ">
                 <h3 className="uppercase font-medium text-sm text-center">
                   {col.noteType}
                 </h3>
               </div>
-              <div className="flex flex-col gap-2 p-2 overflow-auto no-scrollbar">
+              <div className="flex flex-col gap-2 p-2 overflow-auto no-scrollbar  ">
                 {col.notes.map((note) => (
                   <Link
                     key={note.id}
                     to={`/note-details/${note.id}/${encodeURIComponent(
                       note.title
                     )}`}
-                    className="p-3 bg-white border border-gray-200 rounded-md shadow-sm text-center cursor-pointer hover:shadow-md transition-shadow"
+                    className="p-3 bg-white border border-gray-200 rounded-md shadow-sm text-center cursor-pointer hover:shadow-md transition-shadow dark:bg-neutral-900 dark:border-gray-500 dark:hover:bg-neutral-800"
                   >
                     {note.title}
                   </Link>

@@ -6,6 +6,35 @@ const useUserStore = create((set) => ({
   token: localStorage.getItem("token") || null,
   error: "",
 
+  // 🌗 Theme state
+  theme: localStorage.getItem("theme") || "light",
+
+  setTheme: (newTheme) => {
+    localStorage.setItem("theme", newTheme);
+    if (newTheme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+    set({ theme: newTheme });
+  },
+
+  toggleTheme: () => {
+    set((state) => {
+      const newTheme = state.theme === "dark" ? "light" : "dark";
+      localStorage.setItem("theme", newTheme);
+
+      if (newTheme === "dark") {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+
+      return { theme: newTheme };
+    });
+  },
+
+  // 🔐 Authentication methods
   signIn: async ({ username, password }) => {
     try {
       const res = await login({ username, password });
@@ -30,7 +59,6 @@ const useUserStore = create((set) => ({
       set({ error: "" });
       return { success: true, message: res.data.message || "User registered" };
     } catch (err) {
-      console.log("Signup error:", err.response?.data);
       const message = err.response?.data?.message || "Signup failed";
       set({ error: message });
       return { success: false, message: message };
