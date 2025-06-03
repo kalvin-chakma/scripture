@@ -16,7 +16,14 @@ export const routes = (
       <Route path="/" element={<Navigate to="/user/signup" replace />} />
       <Route path="/user/signup" element={<SignUp />} />
       <Route path="/user/signin" element={<SignIn />} />
-      <Route path="/home" element={<Home />} />
+      <Route
+        path="/home"
+        element={
+          <ProtectedRoute>
+            <Home />
+          </ProtectedRoute>
+        }
+      />
     </Route>
     <Route element={<SimpleLayout />}>
       <Route
