@@ -9,13 +9,13 @@ export default function Sidebar() {
     <>
       <div className="w-56 bg-white border-r border-gray-200 flex flex-col dark:bg-neutral-900 dark:text-gray-200 dark:border-gray-700">
         {/* Header */}
-        <div className="p-5 font-medium text-lg">Projects</div>
+        {/* <div className="p-5 font-medium text-md text-center">Projects</div> */}
         <div className="flex flex-col px-5">
           <button
-            className="mb-2 flex items-center justify-center p-2 border border-zinc-700 dark:hover:bg-zinc-600 hover:bg-gray-100 rounded cursor-pointer"
+            className="my-2 flex items-center justify-center p-2 text-xs border border-zinc-700 dark:hover:bg-zinc-600 hover:bg-gray-100 rounded cursor-pointer"
             onClick={() => setShowNoteModal(true)}
           >
-            Note
+            Create Note
           </button>
         </div>
 

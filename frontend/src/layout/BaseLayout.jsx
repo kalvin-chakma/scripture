@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
-import { MoreHorizontal } from "lucide-react";
 import useUserStore from "../store/useUserStore";
+import { BsLightbulb, BsLightbulbOffFill } from "react-icons/bs";
+import { IoPersonCircle } from "react-icons/io5";
 
 export default function BaseLayout() {
   const { theme, toggleTheme } = useUserStore();
@@ -12,14 +13,14 @@ export default function BaseLayout() {
           <h1 className="text-2xl font-bold">SCRIPTURE</h1>
         </div>
         <div className="flex items-center space-x-4">
-          <button className="text-gray-500 hover:text-gray-700">
-            <MoreHorizontal className="w-5 h-5" />
-          </button>
           <button
             onClick={toggleTheme}
-            className="p-2 rounded bg-gray-200 dark:bg-gray-700 text-black dark:text-white"
+            className="rounded text-black text-2xl dark:text-white"
           >
-            Toggle to {theme === "dark" ? "Light" : "Dark"} Mode
+            {theme === "dark" ? <BsLightbulbOffFill /> : <BsLightbulb />}
+          </button>
+          <button className="text-gray-900 dark:text-white hover:text-gray-700">
+            <IoPersonCircle className="text-4xl" />
           </button>
         </div>
       </header>
