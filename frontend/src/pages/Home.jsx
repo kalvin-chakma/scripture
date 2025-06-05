@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import { getNote } from "../services/api";
 import HomeLoader from "../components/loaders/homeLoader";
+import { SiPinboard } from "react-icons/si";
 
 export default function Home() {
   const [noteTypeOrder, setNoteTypeOrder] = useState(() => {
@@ -82,7 +83,7 @@ export default function Home() {
                 className="w-72 px-3 flex-shrink-0 flex flex-col bg-gray-50 rounded-lg shadow-sm dark:bg-neutral-900 dark:text-gray-300"
               >
                 <div className="p-2 border-b border-gray-500 dark:border-gray-100">
-                  <h3 className="uppercase font-medium text-xs text-center">
+                  <h3 className="uppercase font-bold text-xs text-center">
                     {col.noteType}
                   </h3>
                 </div>
@@ -93,9 +94,10 @@ export default function Home() {
                       to={`/note-details/${note.id}/${encodeURIComponent(
                         note.title
                       )}`}
-                      className="p-2 bg-white border border-gray-200 rounded-md shadow-md text-center cursor-pointer hover:shadow-lg transition-shadow dark:bg-neutral-900 dark:border-gray-500 dark:hover:bg-neutral-800"
+                      className="p-2 bg-white border border-gray-200 rounded-md shadow-md text-sm cursor-pointer hover:shadow-lg transition-shadow dark:bg-neutral-900 dark:border-gray-500 dark:hover:bg-neutral-800 flex items-center justify-center space-x-2 text-center"
                     >
-                      {note.title}
+                      <SiPinboard />
+                      <span>{note.title}</span>
                     </Link>
                   ))}
                 </div>
