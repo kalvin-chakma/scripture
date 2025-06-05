@@ -9,6 +9,7 @@ import GeneralNoteEditor from "../note-editor/GeneralNoteEditor";
 import TodoNoteEditor from "../note-editor/TodoNoteEditor";
 import ProtectedRoute from "./protectedRoute";
 import NoteDetails from "../pages/NoteDetails";
+import NoteDetailLayout from "../layout/NoteDetailLayout";
 
 export const routes = (
   <>
@@ -52,6 +53,8 @@ export const routes = (
           </ProtectedRoute>
         }
       />
+    </Route>
+    <Route element={<NoteDetailLayout />}>
       <Route
         path="/note-details/:id/:title"
         element={
