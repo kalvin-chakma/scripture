@@ -8,7 +8,7 @@ export default function BaseLayout() {
 
   return (
     <div className="flex flex-col text-black overflow-x-hidden w-full h-screen no-scrollbar">
-      <header className="h-[10vh] border-b border-gray-200 flex items-center justify-between px-4 w-full dark:bg-neutral-950 dark:text-gray-200 dark:border-neutral-900">
+      <header className="h-[10vh] border-b bg-zinc-100/65 border-gray-200 flex items-center justify-between px-4 w-full dark:bg-neutral-950/90 dark:text-gray-200 dark:border-neutral-900">
         <div className="flex items-center">
           <h1 className="text-2xl font-bold">SCRIPTURE</h1>
         </div>

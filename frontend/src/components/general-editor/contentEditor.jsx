@@ -1,6 +1,7 @@
 import { useEffect, useRef, memo } from "react";
 import EditorJS from "@editorjs/editorjs";
 import tools from "./tools";
+import "./style.css";
 
 const ContentEditor = memo(({ data, onChange, editorBlock, theme }) => {
   const editorRef = useRef(null);
@@ -33,11 +34,9 @@ const ContentEditor = memo(({ data, onChange, editorBlock, theme }) => {
   return (
     <div
       id={editorBlock}
-      className={`w-full h-full min-h-full border rounded p-2 ${
-        theme === "dark"
-          ? "border-gray-600 bg-[#171717] text-white/75"
-          : "border-gray-300 bg-white text-gray-900"
-      }`}
+      className={
+        "w-full h-full min-h-full rounded p-2 bg-white text-gray-900  dark:bg-[#0d1117]  dark:text-white/75"
+      }
     />
   );
 });

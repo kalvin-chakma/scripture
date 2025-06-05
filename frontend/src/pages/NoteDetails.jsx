@@ -44,13 +44,15 @@ export default function NoteDetails() {
 
   return (
     <div
-      className={`px-4 sm:px-6 lg:px-8 py-6 max-w-4xl mx-auto ${
-        note.noteType === "markdown" ? "dark:text-white dark:bg-[#0d1117]" : ""
+      className={`px-4 sm:px-6 lg:px-8 py-6 max-w-4xl mx-auto w-screen ${
+        note.noteType === "markdown"
+          ? "dark:text-white dark:bg-[#0d1117]"
+          : "dark:bg-[#0d1117] "
       }`}
     >
       <div>
         <div className="flex flex-col items-center gap-2 mb-6 text-center">
-          <div className="text-xl sm:text-2xl font-bold break-words">
+          <div className="text-xl sm:text-2xl font-bold break-words dark:text-white">
             Title: {note.title}
           </div>
           <div className="text-[0.7rem] sm:text-xs text-gray-600 dark:text-gray-400 font-semibold">

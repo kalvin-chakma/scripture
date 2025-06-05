@@ -8,7 +8,7 @@ const HomeLoader = () => {
         {[0, 1, 2].map((index) => (
           <motion.span
             key={index}
-            className="w-4 h-4 bg-white rounded-full"
+            className="w-4 h-4 bg-black dark:bg-white rounded-full"
             animate={{
               y: [0, -20, 0],
               opacity: [1, 0.5, 1],
