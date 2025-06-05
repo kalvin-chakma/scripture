@@ -10,6 +10,7 @@ import TodoNoteEditor from "../note-editor/TodoNoteEditor";
 import ProtectedRoute from "./protectedRoute";
 import NoteDetails from "../pages/NoteDetails";
 import NoteDetailLayout from "../layout/NoteDetailLayout";
+import UpdateRouteHandler from "./updateRouteHandler";
 
 export const routes = (
   <>
@@ -50,6 +51,14 @@ export const routes = (
         element={
           <ProtectedRoute>
             <TodoNoteEditor />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/update/:id/:title"
+        element={
+          <ProtectedRoute>
+            <UpdateRouteHandler />
           </ProtectedRoute>
         }
       />

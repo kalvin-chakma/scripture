@@ -1,0 +1,8 @@
+/* markdown-custom.css */
+.prose code,
+.prose pre {
+
+  color: #000000 !important;            /* light text */
+ 
+}
+

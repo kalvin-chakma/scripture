@@ -4,6 +4,7 @@ const { authenticateJWT } = require("../middleware/auth");
 
 const router = express.Router();
 
+//create and save note of authenticated user
 router.post("/save", authenticateJWT, async (req, res) => {
   const { title, content, noteType } = req.body;
 
@@ -26,6 +27,7 @@ router.post("/save", authenticateJWT, async (req, res) => {
   }
 });
 
+//get all notes of a authenticated user
 router.get("/my-notes", authenticateJWT, async (req, res) => {
   try {
     const userId = req.user_id;
@@ -34,6 +36,51 @@ router.get("/my-notes", authenticateJWT, async (req, res) => {
     res.status(200).json({ notes });
   } catch (error) {
     res.status(500).json({ message: "Failed to fetch notes", error });
+  }
+});
+
+// Update note by ID
+router.put("/update/:id", authenticateJWT, async (req, res) => {
+  const { title, content, noteType } = req.body;
+
+  try {
+    const updatedNote = await Note.findOneAndUpdate(
+      { _id: req.params.id, user_id: req.user_id }, // Make sure the user owns the note
+      { title: title, content: content, noteType: content },
+      { new: true }
+    );
+
+    if (!updatedNote) {
+      return res
+        .status(404)
+        .json({ message: "Note not found or unauthorized" });
+    }
+
+    res
+      .status(200)
+      .json({ message: "Note updated successfully", note: updatedNote });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to update note", error });
+  }
+});
+
+// Delete note by ID
+router.delete("/delete/:id", authenticateJWT, async (req, res) => {
+  try {
+    const deletedNote = await Note.findOneAndDelete({
+      _id: req.params.id,
+      user_id: req.user_id, // Ensure user owns the note
+    });
+
+    if (!deletedNote) {
+      return res
+        .status(404)
+        .json({ message: "Note not found or unauthorized" });
+    }
+
+    res.status(200).json({ message: "Note deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to delete note", error });
   }
 });
 

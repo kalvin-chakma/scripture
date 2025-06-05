@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import { getNote } from "../services/api";
 import HomeLoader from "../components/loaders/homeLoader";
@@ -8,6 +8,7 @@ import { RxDragHandleDots2 } from "react-icons/rx";
 import NoteOptionsPopup from "../components/NoteOptionsPopup";
 
 export default function Home() {
+  const navigate = useNavigate();
   const [columns, setColumns] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeMenuNoteId, setActiveMenuNoteId] = useState(null);
@@ -18,6 +19,12 @@ export default function Home() {
   });
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
     const fetchNotes = async () => {
       setLoading(true);
       try {
@@ -67,7 +74,7 @@ export default function Home() {
     };
 
     fetchNotes();
-  }, [noteTypeOrder]);
+  }, [noteTypeOrder, navigate]);
 
   return (
     <div className="flex h-full text-gray-800 font-sans no-scrollbar">
@@ -119,11 +126,17 @@ export default function Home() {
                             {activeMenuNoteId === note.id && (
                               <NoteOptionsPopup
                                 onEdit={() => {
-                                  console.log("Edit clicked for", note.id);
-                                  setActiveMenuNoteId(null);
-                                }}
-                                onDelete={() => {
-                                  console.log("Delete clicked for", note.id);
+                                  navigate(
+                                    `/update/${note.id}/${encodeURIComponent(
+                                      note.title
+                                    )}`,
+                                    {
+                                      state: {
+                                        title: note.title,
+                                        noteType: col.noteType, // Pass noteType from column
+                                      },
+                                    }
+                                  );
                                   setActiveMenuNoteId(null);
                                 }}
                               />
