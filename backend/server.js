@@ -11,7 +11,12 @@ dotenv.config();
 
 const app = express();
 
-app.use(cors());
+const allowedOrigins = ['https://scripture-esqx.vercel.app'];
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true,
+}));
+
 app.use(express.json());
 
 app.use(
