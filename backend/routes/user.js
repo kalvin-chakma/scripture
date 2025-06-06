@@ -73,7 +73,7 @@ router.get(
       expiresIn: "1h",
     });
     res.redirect(
-      `https://scripture-esqx.vercel.app/auth/callback?token=${token}&user=${encodeURIComponent(
+      `http://localhost:5173/auth/callback?token=${token}&user=${encodeURIComponent(
         JSON.stringify({
           username: req.user.username,
           id: req.user._id,
