@@ -47,24 +47,7 @@ const useUserStore = create((set) => ({
       set({ user: userData, token, error: "" });
       return { success: true, message: res.data.message };
     } catch (err) {
-      const message = err.response?.data?.message || "Invalid credentials";
-      set({ error: message });
-      return { success: false, message: message };
-    }
-  },
-
-  handleGoogleAuth: async (token, userData) => {
-    try {
-      localStorage.setItem("user", JSON.stringify(userData));
-      localStorage.setItem("token", token);
-      set({ user: userData, token, error: "" });
-      return {
-        success: true,
-        message: "Successfully authenticated with Google",
-      };
-    } catch (err) {
-      const message =
-        err.response?.data?.message || "Google authentication failed";
+      const message = err.response?.data?.message || "Failed to sign in";
       set({ error: message });
       return { success: false, message: message };
     }

@@ -39,10 +39,7 @@ const SignUp = () => {
         </div>
 
         <Button
-          onClick={() => {
-            window.location.href =
-              "https://scripture-xi.vercel.app/user/google";
-          }}
+          onClick={() => {}}
           className="w-[35vh] mx-auto lg:w-full bg-white text-gray-900 flex items-center justify-center gap-3 hover:bg-gray-50"
         >
           <FcGoogle className="w-5 h-5" />
@@ -61,6 +58,7 @@ const SignUp = () => {
               type="email"
               className="w-full bg-gray-800 border border-gray-600 rounded-lg py-2 px-4 text-white placeholder-gray-400 focus:border-gray-400 focus:outline-none"
               placeholder="Email"
+              autoComplete="username"
               value={form.username}
               onChange={(e) => setForm({ ...form, username: e.target.value })}
               required

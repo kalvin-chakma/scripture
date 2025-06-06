@@ -31,13 +31,7 @@ const SignIn = () => {
         <div className="bg-black rounded-lg p-8">
           {/* Google Sign In */}
           <div className="space-y-4 mb-6">
-            <Button
-              onClick={() => {
-                window.location.href =
-                  "https://scripture-xi.vercel.app/user/google";
-              }}
-              className="w-full bg-gray-50 text-gray-900 flex items-center justify-center gap-3 hover:bg-gray-200"
-            >
+            <Button className="w-full bg-gray-50 text-gray-900 flex items-center justify-center gap-3 hover:bg-gray-200">
               <FcGoogle className="w-5 h-5" />
               Continue with Google
             </Button>
@@ -52,6 +46,7 @@ const SignIn = () => {
                 type="email"
                 className="w-full bg-gray-800 border border-gray-600 rounded-lg py-2 px-4 text-white placeholder-gray-400 focus:border-gray-400 focus:outline-none"
                 placeholder="Email"
+                autoComplete="usename"
                 value={form.username}
                 onChange={(e) => setForm({ ...form, username: e.target.value })}
                 required
