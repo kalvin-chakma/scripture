@@ -1,8 +1,8 @@
-/* markdown-custom.css */
-.prose code,
-.prose pre {
-
-  color: #000000 !important;            /* light text */
- 
+ .wmde-markdown pre code{
+  color: #f5a056 !important;
 }
-
+/* Apply only in light mode */
+:not(.dark) .markdown-editor .prose code,
+:not(.dark) .markdown-editor .prose pre {
+  color: #000000 !important; /* Black text for light mode */
+}

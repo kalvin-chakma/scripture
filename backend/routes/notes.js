@@ -45,8 +45,8 @@ router.put("/update/:id", authenticateJWT, async (req, res) => {
 
   try {
     const updatedNote = await Note.findOneAndUpdate(
-      { _id: req.params.id, user_id: req.user_id }, // Make sure the user owns the note
-      { title: title, content: content, noteType: content },
+      { _id: req.params.id, user_id: req.user_id },
+      { title: title, content: content, noteType: noteType },
       { new: true }
     );
 
@@ -69,7 +69,7 @@ router.delete("/delete/:id", authenticateJWT, async (req, res) => {
   try {
     const deletedNote = await Note.findOneAndDelete({
       _id: req.params.id,
-      user_id: req.user_id, // Ensure user owns the note
+      user_id: req.user_id,
     });
 
     if (!deletedNote) {

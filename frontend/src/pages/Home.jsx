@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
-import { getNote } from "../services/api";
+import { deleteNote, getNote } from "../services/api";
 import HomeLoader from "../components/loaders/homeLoader";
 import { SiPinboard } from "react-icons/si";
 import { RxDragHandleDots2 } from "react-icons/rx";
@@ -133,11 +133,40 @@ export default function Home() {
                                     {
                                       state: {
                                         title: note.title,
-                                        noteType: col.noteType, // Pass noteType from column
+                                        noteType: col.noteType,
                                       },
                                     }
                                   );
                                   setActiveMenuNoteId(null);
+                                }}
+                                onDelete={async () => {
+                                  try {
+                                    await deleteNote(note.id);
+
+                                    // Update UI by removing the deleted note from state
+                                    const updatedColumns = columns.map(
+                                      (column) => {
+                                        if (column.noteType === col.noteType) {
+                                          return {
+                                            ...column,
+                                            notes: column.notes.filter(
+                                              (n) => n.id !== note.id
+                                            ),
+                                          };
+                                        }
+                                        return column;
+                                      }
+                                    );
+
+                                    setColumns(updatedColumns);
+                                  } catch (err) {
+                                    console.error(
+                                      "Failed to delete note:",
+                                      err
+                                    );
+                                  } finally {
+                                    setActiveMenuNoteId(null);
+                                  }
                                 }}
                               />
                             )}
