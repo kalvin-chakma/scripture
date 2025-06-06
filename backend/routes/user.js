@@ -73,7 +73,7 @@ router.get(
       expiresIn: "1h",
     });
     res.redirect(
-      `http://localhost:5173/auth/callback?token=${token}&user=${encodeURIComponent(
+      `/auth/callback?token=${token}&user=${encodeURIComponent(
         JSON.stringify({
           username: req.user.username,
           id: req.user._id,
