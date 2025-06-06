@@ -68,6 +68,7 @@ const useUserStore = create((set) => ({
   signOut: () => {
     localStorage.removeItem("user");
     localStorage.removeItem("token");
+    localStorage.removeItem("noteTypeOrder");
     set({ user: null, token: null, error: "" });
   },
 
