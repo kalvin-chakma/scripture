@@ -1,7 +1,6 @@
 import axios from "axios";
 
-//const API = import.meta.env.REACT_APP_API_URL || "http://localhost:3000";
-const API = "https://scripture-xi.vercel.app/";
+const API = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
 const apiClient = axios.create({
   baseURL: API,
@@ -26,5 +25,5 @@ export const handleGoogleCallback = (code) =>
 
 // Notes APIs
 export const saveNote = (data) => apiClient.post("/note/save", data);
-export const getNote = (data) => apiClient.get("/note/my-notes", data);
+export const getNote = (data) => apiClient.get("/note/my-notes", data); // No need for data in GET
 export const deleteNote = (id) => apiClient.delete(`/note/delete/${id}`);
