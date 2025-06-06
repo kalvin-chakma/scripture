@@ -4,13 +4,17 @@ const User = require("../models/user");
 
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRECT = process.env.GOOGLE_CLIENT_SECRECT;
+const CALLBACK_URL =
+  process.env.NODE_ENV === "production"
+    ? "https://scripture-xi.vercel.app/user/google/callback"
+    : "http://localhost:3000/user/google/callback";
 
 passport.use(
   new GoogleStrategy(
     {
       clientID: GOOGLE_CLIENT_ID,
       clientSecret: GOOGLE_CLIENT_SECRECT,
-      callbackURL: "/user/google/callback",
+      callbackURL: CALLBACK_URL,
     },
 
     async (accesToken, refreshToken, profile, done) => {
