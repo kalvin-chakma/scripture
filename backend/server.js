@@ -18,9 +18,6 @@ app.use(
   })
 );
 
-// Allow preflight requests (Optional but recommended)
-app.options("*", cors());
-
 app.use(express.json());
 
 app.use(
