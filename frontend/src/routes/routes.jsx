@@ -11,6 +11,7 @@ import ProtectedRoute from "./protectedRoute";
 import NoteDetails from "../pages/NoteDetails";
 import NoteDetailLayout from "../layout/NoteDetailLayout";
 import UpdateRouteHandler from "./updateRouteHandler";
+import AuthCallback from "../services/AuthCallback";
 
 export const routes = (
   <>
@@ -28,6 +29,7 @@ export const routes = (
     <Route element={<SimpleLayout />}>
       <Route path="/user/signup" element={<SignUp />} />
       <Route path="/user/signin" element={<SignIn />} />
+      <Route path="/auth/callback" element={<AuthCallback />} />
     </Route>
     <Route element={<SimpleLayout />}>
       <Route

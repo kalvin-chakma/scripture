@@ -53,6 +53,23 @@ const useUserStore = create((set) => ({
     }
   },
 
+  handleGoogleAuth: async (token, userData) => {
+    try {
+      localStorage.setItem("user", JSON.stringify(userData));
+      localStorage.setItem("token", token);
+      set({ user: userData, token, error: "" });
+      return {
+        success: true,
+        message: "Successfully authenticated with Google",
+      };
+    } catch (err) {
+      const message =
+        err.response?.data?.message || "Google authentication failed";
+      set({ error: message });
+      return { success: false, message: message };
+    }
+  },
+
   signUp: async ({ username, password }) => {
     try {
       const res = await signup({ username, password });

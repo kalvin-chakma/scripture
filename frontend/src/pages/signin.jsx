@@ -8,12 +8,8 @@ import Button from "../components/ui/Button";
 const SignIn = () => {
   const [form, setForm] = useState({ username: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
-  const { signIn, error, clearError } = useUserStore();
+  const { signIn } = useUserStore();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    clearError();
-  }, [form.username, form.password, clearError]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -35,7 +31,13 @@ const SignIn = () => {
         <div className="bg-black rounded-lg p-8">
           {/* Google Sign In */}
           <div className="space-y-4 mb-6">
-            <Button className="w-full bg-gray-50 text-gray-900 flex items-center justify-center gap-3 hover:bg-gray-200">
+            <Button
+              onClick={() => {
+                window.location.href =
+                  "https://scripture-xi.vercel.app/user/google";
+              }}
+              className="w-full bg-gray-50 text-gray-900 flex items-center justify-center gap-3 hover:bg-gray-200"
+            >
               <FcGoogle className="w-5 h-5" />
               Continue with Google
             </Button>
@@ -64,6 +66,7 @@ const SignIn = () => {
                   className="w-full bg-gray-800 border border-gray-600 rounded-lg py-2 px-4 pr-10 text-white placeholder-gray-400 focus:border-gray-400 focus:outline-none"
                   placeholder="•••••••••••••"
                   value={form.password}
+                  autoComplete="current password"
                   onChange={(e) =>
                     setForm({ ...form, password: e.target.value })
                   }
@@ -90,7 +93,7 @@ const SignIn = () => {
           {/* Sign Up Link */}
           <div className="text-center mt-6">
             <p className="text-gray-400">
-              Don’t have an account?{" "}
+              Don't have an account?{" "}
               <Button
                 type="button"
                 className="text-white text-sm px-0 underline hover:no-underline"

@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const User = require("../models/user");
 const { SECRET } = require("../middleware/auth");
+const passport = require("passport");
 
 const router = express.Router();
 
@@ -59,5 +60,27 @@ router.post("/signin", async (req, res) => {
     res.status(500).json({ message: "Error signing in", error: error.message });
   }
 });
+
+//initiate Google OAuth
+router.get("/google", passport.authenticate("google", { scope: ["profile"] }));
+
+//Google OAuth Callback
+router.get(
+  "/google/callback",
+  passport.authenticate("google", { session: false, failureRedirect: "/" }),
+  (req, res) => {
+    const token = jwt.sign({ userID: req.user._id }, SECRET, {
+      expiresIn: "1h",
+    });
+    res.redirect(
+      `http://localhost:5173/auth/callback?token=${token}&user=${encodeURIComponent(
+        JSON.stringify({
+          username: req.user.username,
+          id: req.user._id,
+        })
+      )}`
+    );
+  }
+);
 
 module.exports = router;

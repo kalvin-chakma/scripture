@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useUserStore from "../store/useUserStore";
 import { FcGoogle } from "react-icons/fc";
@@ -9,12 +9,8 @@ const SignUp = () => {
   const [form, setForm] = useState({ username: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
   const [agreeToTerms, setAgreeToTerms] = useState(false);
-  const { signUp, error, clearError } = useUserStore();
+  const { signUp } = useUserStore();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    clearError();
-  }, [form, clearError]);
 
   const rules = [
     { rule: /(?=.*[a-z])(?=.*[A-Z])/, label: "Upper & lowercase" },
@@ -26,7 +22,7 @@ const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!isPasswordValid) return;
+    if (!isPasswordValid || !agreeToTerms) return;
     const result = await signUp(form);
     alert(result.message);
     if (result.success) navigate("/user/signin");
@@ -42,8 +38,15 @@ const SignUp = () => {
           <p className="text-gray-400">Free for everyone.</p>
         </div>
 
-        <Button className="w-[35vh] mx-auto lg:w-full bg-white text-gray-900 flex items-center justify-center gap-3 hover:bg-gray-50">
-          <FcGoogle className="w-5 h-5" /> Continue with Google
+        <Button
+          onClick={() => {
+            window.location.href =
+              "https://scripture-xi.vercel.app/user/google";
+          }}
+          className="w-[35vh] mx-auto lg:w-full bg-white text-gray-900 flex items-center justify-center gap-3 hover:bg-gray-50"
+        >
+          <FcGoogle className="w-5 h-5" />
+          Continue with Google
         </Button>
 
         <div className="text-center text-gray-500">or</div>
@@ -72,6 +75,7 @@ const SignUp = () => {
                 className="w-full bg-gray-800 border border-gray-600 rounded-lg py-2 px-4 pr-12 text-white placeholder-gray-400 focus:border-gray-400 focus:outline-none"
                 placeholder="•••••••••••••"
                 value={form.password}
+                autoComplete="current-password"
                 onChange={(e) => setForm({ ...form, password: e.target.value })}
                 required
               />
@@ -83,6 +87,7 @@ const SignUp = () => {
                 {showPassword ? <FaEyeSlash /> : <FaEye />}
               </button>
             </div>
+
             <div className="mt-2 space-y-1 text-sm">
               {rules.map(({ rule, label }, i) => {
                 const valid = rule.test(form.password);
@@ -139,7 +144,7 @@ const SignUp = () => {
           <p className="text-gray-400">
             Already have an account?{" "}
             <Button
-              className="text-white text-sm  underline hover:no-underline"
+              className="text-white text-sm underline hover:no-underline"
               onClick={() => navigate("/user/signin")}
             >
               Sign in
