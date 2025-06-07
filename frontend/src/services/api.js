@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const API = import.meta.env.VITE_API_URL || "http://localhost:3000";
-//const API = "https://scripture-xi.vercel.app/";
+//const API = import.meta.env.VITE_API_URL || "http://localhost:3000";
+const API = "https://scripture-xi.vercel.app/";
 
 const apiClient = axios.create({
   baseURL: API,
