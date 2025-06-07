@@ -34,7 +34,6 @@ export default function NoteDetails() {
 
     fetchNote();
   }, [id]);
-
   if (!note)
     return (
       <div>
