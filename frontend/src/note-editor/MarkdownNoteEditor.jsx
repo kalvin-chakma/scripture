@@ -118,6 +118,7 @@ const MarkdownNoteEditor = () => {
             height="85vh"
             preview="live"
             visible={true}
+            value={markdown}
             onChange={(value) => setMarkdown(value)}
           />
         </div>
