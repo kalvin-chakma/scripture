@@ -101,12 +101,12 @@ export default function Home() {
                   {col.notes.map((note) => (
                     <div key={note.id}>
                       <div key={note.id} className="">
-                        <div className="flex flex-row p-2 bg-white border border-gray-200 rounded-md shadow-sm text-sm cursor-pointer items-center justify-between text-center hover:shadow-lg hover:scale-105 transition-shadow dark:bg-neutral-900 dark:border-gray-500 dark:hover:bg-neutral-800 dark:shadow-lg dark:hover:scale-105">
+                        <div className="flex flex-row  bg-white border border-gray-200 rounded-md shadow-sm text-sm cursor-pointer items-center justify-between text-center hover:shadow-lg hover:scale-105 transition-shadow dark:bg-neutral-900 dark:border-gray-500 dark:hover:bg-neutral-800 dark:shadow-lg dark:hover:scale-105">
                           <Link
                             to={`/note-details/${note.id}/${encodeURIComponent(
                               note.title
                             )}`}
-                            className="w-[100%] overflow-hidden"
+                            className="w-[100%] overflow-hidden p-2"
                           >
                             <div className="flex items-center space-x-2">
                               <SiPinboard />

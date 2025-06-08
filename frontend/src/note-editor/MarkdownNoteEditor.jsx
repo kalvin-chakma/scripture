@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import MarkdownEditor from "@uiw/react-markdown-editor";
-import { saveNote, getNote } from "../services/api";
+import { saveNote, getNote, updateNote } from "../services/api";
 import HomeLoader from "../components/loaders/homeLoader";
 import useUserStore from "../store/useUserStore";
 import { RiArrowLeftSFill, RiSave2Fill } from "react-icons/ri";
@@ -61,10 +61,13 @@ const MarkdownNoteEditor = () => {
         title,
         content: markdown,
         noteType: noteType || "default",
-        id: isEditMode ? id : undefined, // include id if editing
       };
+      if (isEditMode) {
+        await updateNote(id, payload);
+      } else {
+        await saveNote(payload);
+      }
 
-      await saveNote(payload);
       alert("Note saved!");
       navigate("/home");
     } catch (error) {

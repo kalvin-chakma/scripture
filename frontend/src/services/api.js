@@ -26,3 +26,5 @@ export const signup = (credentials) =>
 export const saveNote = (data) => apiClient.post("/note/save", data);
 export const getNote = (data) => apiClient.get("/note/my-notes", data);
 export const deleteNote = (id) => apiClient.delete(`/note/delete/${id}`);
+export const updateNote = (id, data) =>
+  apiClient.put(`/note/update/${id}`, data);

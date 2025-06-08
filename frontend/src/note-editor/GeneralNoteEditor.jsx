@@ -96,7 +96,7 @@ const GeneralNoteEditor = () => {
   const goBack = () => navigate(-1);
 
   return (
-    <div className="max-w-5xl mx-auto p-5 dark:bg-[#171717] dark:text-white h-screen">
+    <div className="max-w-5xl mx-auto p-5 dark:bg-[#0d1117] dark:text-white h-screen">
       <div className="flex justify-between items-center px-1 mb-1">
         <Button
           onClick={goBack}
