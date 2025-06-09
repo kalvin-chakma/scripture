@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
+const passport = require("passport");
 const connectToDB = require("./db/db");
 const userRouter = require("./routes/user");
 const noteRouter = require("./routes/notes");
@@ -10,6 +11,9 @@ dotenv.config();
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+require("./middleware/OAuth");
+app.use(passport.initialize());
 
 app.use("/user", userRouter);
 app.use("/note", noteRouter);

@@ -39,8 +39,8 @@ const SignUp = () => {
         </div>
 
         <Button
-          onClick={() => {}}
           className="w-[35vh] mx-auto lg:w-full bg-white text-gray-900 flex items-center justify-center gap-3 hover:bg-gray-50"
+          onClick={() => useUserStore.getState().googleSignIn()}
         >
           <FcGoogle className="w-5 h-5" />
           Continue with Google

@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const User = require("../models/user");
 const { SECRET } = require("../middleware/auth");
+const passport = require("passport");
 
 const router = express.Router();
 
@@ -60,4 +61,26 @@ router.post("/signin", async (req, res) => {
   }
 });
 
+//Google OAuth routes
+router.get(
+  "/auth/google",
+  passport.authenticate("google", { scope: ["profile", "email"] })
+);
+
+router.get(
+  "/auth/google/callback",
+  passport.authenticate("google", {
+    failureRedirect: "/signin",
+    session: false,
+  }),
+  (req, res) => {
+    const token = jwt.sign(
+      { userID: req.user._id, username: req.user.username },
+      SECRET,
+      { expiresIn: "1h" }
+    );
+
+    res.redirect(`${process.env.FRONTEND_URL}/oauth-success?token=${token}`);
+  }
+);
 module.exports = router;

@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { login, signup } from "../services/api";
+import { login, signup, API } from "../services/api";
 
 const useUserStore = create((set) => ({
   user: JSON.parse(localStorage.getItem("user")) || null,
@@ -63,6 +63,10 @@ const useUserStore = create((set) => ({
       set({ error: message });
       return { success: false, message: message };
     }
+  },
+
+  googleSignIn: async () => {
+    window.location.href = "https://scripture-xi.vercel.app/user/auth/google/";
   },
 
   signOut: () => {

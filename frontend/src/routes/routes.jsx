@@ -11,6 +11,7 @@ import ProtectedRoute from "./protectedRoute";
 import NoteDetails from "../pages/NoteDetails";
 import NoteDetailLayout from "../layout/NoteDetailLayout";
 import UpdateRouteHandler from "./updateRouteHandler";
+import OAuthSuccess from "../services/OAuthSuccess";
 
 export const routes = (
   <>
@@ -30,6 +31,7 @@ export const routes = (
       <Route path="/user/signin" element={<SignIn />} />
     </Route>
     <Route element={<SimpleLayout />}>
+      <Route path="/oauth-success" element={<OAuthSuccess />} />
       <Route
         path="/markdown-editor"
         element={
