@@ -12,24 +12,4 @@
   scrollbar-width: none; /* Firefox */
 }
 
-/* Codex Editor Heading Styles */
-.codex-editor h1 {
-  @apply text-4xl font-bold;
-}
 
-.codex-editor h2 {
-  @apply text-3xl font-bold;
-}
-
-.codex-editor h3 {
-  @apply text-2xl font-bold;
-}
-
-.codex-editor h4 {
-  @apply text-xl font-bold;
-}
-body .w-md-editor-text-pre > code,
-body .w-md-editor-text-input {
-  font-size: 50px !important;
-  line-height: 50px !important;
-}

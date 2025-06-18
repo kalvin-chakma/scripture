@@ -10,13 +10,22 @@ const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
   const { signIn } = useUserStore();
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const result = await signIn(form);
-    alert(result.message);
-    if (result.success) {
-      navigate("/home");
+    setIsLoading(true);
+    try {
+      const result = await signIn(form);
+      if (result.success) {
+        navigate("/home");
+      } else {
+        alert(result.message);
+      }
+    } catch (error) {
+      alert("An error occurred during sign in");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -82,9 +91,10 @@ const SignIn = () => {
 
             <Button
               type="submit"
-              className="w-full bg-gray-700 hover:bg-gray-500 text-white"
+              className="w-full px-4 py-2 rounded-md bg-gray-700 text-white"
+              disabled={isLoading}
             >
-              Sign In
+              {isLoading ? "Loading..." : "Sign in"}
             </Button>
           </form>
 

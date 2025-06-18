@@ -11,6 +11,7 @@ const SignUp = () => {
   const [agreeToTerms, setAgreeToTerms] = useState(false);
   const { signUp } = useUserStore();
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
   const rules = [
     { rule: /(?=.*[a-z])(?=.*[A-Z])/, label: "Upper & lowercase" },
@@ -22,10 +23,19 @@ const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!isPasswordValid || !agreeToTerms) return;
-    const result = await signUp(form);
-    alert(result.message);
-    if (result.success) navigate("/user/signin");
+    setIsLoading(true);
+    try {
+      if (!isPasswordValid || !agreeToTerms) {
+        alert("Please ensure password meets requirements and agree to terms");
+        return;
+      }
+      const result = await signUp(form);
+      if (result.success) navigate("/user/signin");
+    } catch (error) {
+      alert("An error occurred during sign up");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -127,14 +137,14 @@ const SignUp = () => {
 
           <Button
             type="submit"
-            disabled={!agreeToTerms || !isPasswordValid}
+            disabled={!agreeToTerms || !isPasswordValid || isLoading}
             className={`w-full ${
               agreeToTerms && isPasswordValid
                 ? "bg-gray-600 hover:bg-gray-500 text-white"
                 : "bg-gray-700 text-gray-500 cursor-not-allowed"
             }`}
           >
-            Create Account
+            {isLoading ? "Loading..." : "Sign up"}
           </Button>
         </form>
 
