@@ -43,7 +43,7 @@ export default function NoteDetails() {
 
   return (
     <div
-      className={`px-4 sm:px-6 lg:px-8 py-6 max-w-4xl mx-auto w-screen ${
+      className={`px-4 sm:px-6 lg:px-8 py-6 max-w-4xl mx-auto w-screen h-screen${
         note.noteType === "markdown"
           ? "dark:text-white dark:bg-[#0d1117]"
           : "dark:bg-[#0d1117] "

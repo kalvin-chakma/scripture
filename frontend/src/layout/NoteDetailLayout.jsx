@@ -7,8 +7,8 @@ const NoteDetailLayout = () => {
   const { theme, toggleTheme } = useUserStore();
 
   return (
-    <div className="dark:bg-[#0d1117] w-screen">
-      <header className="h-[7vh] max-w-4xl mx-auto border-b bg-zinc-100/65 border-gray-200 flex items-center justify-between px-4 w-full dark:bg-neutral-950 dark:text-gray-200 dark:border-neutral-900">
+    <div className="dark:bg-[#0d1117] w-screen h-screen flex flex-col">
+      <header className="h-[7vh] max-w-4xl mx-auto border-b bg-zinc-100/65 border-gray-200 flex items-center justify-between px-4 w-full dark:bg-neutral-950 dark:text-gray-200 dark:border-neutral-900 rounded-xl">
         <div className="flex items-center">
           <h1 className="text-2xl font-bold">SCRIPTURE</h1>
         </div>
@@ -25,11 +25,12 @@ const NoteDetailLayout = () => {
         </div>
       </header>
 
-      <main className="h-screen overflow-x-hidden dark:bg-[#0d1117] no-scrollbar">
+      {/* Make main grow and scroll */}
+      <main className="flex-1 overflow-y-auto no-scrollbar dark:bg-[#0d1117]">
         <Outlet />
       </main>
 
-      <footer></footer>
+      <footer className="h-[0vh]"></footer>
     </div>
   );
 };

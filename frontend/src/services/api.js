@@ -1,7 +1,7 @@
 import axios from "axios";
 
-//export const API = import.meta.env.REACT_APP_API_URL || "http://localhost:3000";
-export const API = "https://scripture-xi.vercel.app/";
+//export const API = import.meta.env.REACT_APP_API_URL || "https://scripture-xi.vercel.app";
+export const API = "https://scripture-xi.vercel.app";
 
 const apiClient = axios.create({
   baseURL: API,
