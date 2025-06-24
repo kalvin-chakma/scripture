@@ -1,6 +1,5 @@
 import axios from "axios";
 
-//export const API =import.meta.env.REACT_APP_API_URL || "https://scripture-xi.vercel.app";
 export const API = "https://scripture-xi.vercel.app";
 //export const API = "http://localhost:3000";
 

@@ -23,7 +23,7 @@ const Navbar = () => {
           {theme === "dark" ? <BsLightbulbOffFill /> : <BsLightbulb />}
         </button>
         <button className="text-gray-900 dark:text-white hover:text-gray-700">
-          {userData.avatar ? (
+          {userData && userData.avatar ? (
             <img
               src={userData.avatar}
               alt="Profile"
