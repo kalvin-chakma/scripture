@@ -9,7 +9,7 @@ export default function SimpleLayout() {
         <Outlet />
       </main>
 
-      <footer>{/* Footer content goes here */}</footer>
+      <footer></footer>
     </div>
   );
 }

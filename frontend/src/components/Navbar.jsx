@@ -4,14 +4,14 @@ import { BsLightbulbOffFill, BsLightbulb } from "react-icons/bs";
 import { IoPersonCircle } from "react-icons/io5";
 
 const Navbar = () => {
-  const { theme, toggleTheme, profile, fetchProfile } = useUserStore();
+  const { theme, toggleTheme, fetchUsetdata, userData } = useUserStore();
 
   useEffect(() => {
-    fetchProfile();
-  }, [fetchProfile]);
+    fetchUsetdata();
+  }, [fetchUsetdata]);
 
   return (
-    <div>
+    <div className="h-[8vh] border-b bg-zinc-100/65 border-gray-200 flex items-center justify-between px-4 w-full dark:bg-neutral-950/90 dark:text-gray-200 dark:border-neutral-900">
       <div className="flex items-center">
         <h1 className="text-2xl font-bold">SCRIPTURE</h1>
       </div>
@@ -23,11 +23,11 @@ const Navbar = () => {
           {theme === "dark" ? <BsLightbulbOffFill /> : <BsLightbulb />}
         </button>
         <button className="text-gray-900 dark:text-white hover:text-gray-700">
-          {profile?.avatar ? (
+          {userData.avatar ? (
             <img
-              src={profile.avatar}
+              src={userData.avatar}
               alt="Profile"
-              className="w-10 h-10 rounded-full object-cover"
+              className="w-8 h-8 rounded-full object-cover"
             />
           ) : (
             <IoPersonCircle className="text-4xl" />

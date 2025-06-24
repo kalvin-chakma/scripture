@@ -1,7 +1,8 @@
 import axios from "axios";
 
-//export const API = import.meta.env.REACT_APP_API_URL || "https://scripture-xi.vercel.app";
+//export const API =import.meta.env.REACT_APP_API_URL || "https://scripture-xi.vercel.app";
 export const API = "https://scripture-xi.vercel.app";
+//export const API = "http://localhost:3000";
 
 const apiClient = axios.create({
   baseURL: API,
@@ -30,4 +31,4 @@ export const updateNote = (id, data) =>
   apiClient.put(`/note/update/${id}`, data);
 
 //User APIS
-export const getUserProfile = () => apiClient.get("/user/profile");
+export const getUsetdata = () => apiClient.get("/user/userdata");

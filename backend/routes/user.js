@@ -85,20 +85,18 @@ router.get(
 );
 
 //Get User Profile
-router.get("/profile", async (req, res) => {
+router.get("/userdata", async (req, res) => {
   try {
     const token = req.headers.authorization?.split(" ")[1];
     if (!token) {
       return res.status(401).json({ message: "Unauthorized" });
     }
     const decoded = jwt.verify(token, SECRET);
-    console.log("decoded", decoded);
     const user = await User.findById(decoded.userID).select("-password");
-    console.log("user", user);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    res.json(user);
+    res.json({ user });
   } catch (error) {
     res
       .status(500)

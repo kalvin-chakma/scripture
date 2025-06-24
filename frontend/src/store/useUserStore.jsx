@@ -1,11 +1,11 @@
 import { create } from "zustand";
-import { login, signup, API, getUserProfile } from "../services/api";
+import { login, signup, API, getUsetdata } from "../services/api";
 
 const useUserStore = create((set) => ({
   user: JSON.parse(localStorage.getItem("user")) || null,
   token: localStorage.getItem("token") || null,
   error: "",
-  profile: null,
+  userData: null,
 
   // Theme state
   theme: localStorage.getItem("theme") || "light",
@@ -68,6 +68,7 @@ const useUserStore = create((set) => ({
   googleSignIn: async () => {
     window.location.href = "https://scripture-xi.vercel.app/user/auth/google/";
   },
+
   //signout state
   signOut: () => {
     localStorage.removeItem("user");
@@ -77,13 +78,13 @@ const useUserStore = create((set) => ({
   },
 
   //Fetch User Profile
-  fetchProfile: async () => {
+  fetchUsetdata: async () => {
     try {
-      const res = await getUserProfile();
-      set({ profile: res.data.user });
+      const res = await getUsetdata();
+      set({ userData: res.data.user });
       return {
         success: true,
-        profile: res.data.user,
+        userData: res.data.user,
         message: res.data.message,
       };
     } catch (error) {
