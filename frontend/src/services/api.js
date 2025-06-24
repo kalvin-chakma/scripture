@@ -28,3 +28,6 @@ export const getNote = (data) => apiClient.get("/note/my-notes", data);
 export const deleteNote = (id) => apiClient.delete(`/note/delete/${id}`);
 export const updateNote = (id, data) =>
   apiClient.put(`/note/update/${id}`, data);
+
+//User APIS
+export const getUserProfile = () => apiClient.get("/user/profile");

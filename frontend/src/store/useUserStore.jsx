@@ -1,14 +1,14 @@
 import { create } from "zustand";
-import { login, signup, API } from "../services/api";
+import { login, signup, API, getUserProfile } from "../services/api";
 
 const useUserStore = create((set) => ({
   user: JSON.parse(localStorage.getItem("user")) || null,
   token: localStorage.getItem("token") || null,
   error: "",
+  profile: null,
 
-  // 🌗 Theme state
+  // Theme state
   theme: localStorage.getItem("theme") || "light",
-
   setTheme: (newTheme) => {
     localStorage.setItem("theme", newTheme);
     if (newTheme === "dark") {
@@ -18,7 +18,7 @@ const useUserStore = create((set) => ({
     }
     set({ theme: newTheme });
   },
-
+  //thene toggle
   toggleTheme: () => {
     set((state) => {
       const newTheme = state.theme === "dark" ? "light" : "dark";
@@ -34,7 +34,7 @@ const useUserStore = create((set) => ({
     });
   },
 
-  // 🔐 Authentication methods
+  // signin state
   signIn: async ({ username, password }) => {
     try {
       const res = await login({ username, password });
@@ -52,7 +52,7 @@ const useUserStore = create((set) => ({
       return { success: false, message: message };
     }
   },
-
+  //signup state
   signUp: async ({ username, password }) => {
     try {
       const res = await signup({ username, password });
@@ -68,7 +68,7 @@ const useUserStore = create((set) => ({
   googleSignIn: async () => {
     window.location.href = "https://scripture-xi.vercel.app/user/auth/google/";
   },
-
+  //signout state
   signOut: () => {
     localStorage.removeItem("user");
     localStorage.removeItem("token");
@@ -76,6 +76,22 @@ const useUserStore = create((set) => ({
     set({ user: null, token: null, error: "" });
   },
 
+  //Fetch User Profile
+  fetchProfile: async () => {
+    try {
+      const res = await getUserProfile();
+      set({ profile: res.data.user });
+      return {
+        success: true,
+        profile: res.data.user,
+        message: res.data.message,
+      };
+    } catch (error) {
+      return { success: false, message: error.message };
+    }
+  },
+
+  //error state
   clearError: () => set({ error: "" }),
 }));
 
