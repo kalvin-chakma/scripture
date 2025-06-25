@@ -12,6 +12,7 @@ const SignUp = () => {
   const { signUp } = useUserStore();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const rules = [
     { rule: /(?=.*[a-z])(?=.*[A-Z])/, label: "Upper & lowercase" },
@@ -24,15 +25,28 @@ const SignUp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    setError("");
     try {
       if (!isPasswordValid || !agreeToTerms) {
-        alert("Please ensure password meets requirements and agree to terms");
+        setError(
+          "Please ensure password meets requirements and agree to terms"
+        );
         return;
       }
       const result = await signUp(form);
-      if (result.success) navigate("/user/signin");
+      if (result.success) {
+        navigate("/user/signin");
+      } else if (result.message) {
+        setError(result.message);
+      } else {
+        setError("An unknown error occurred during sign up.");
+      }
     } catch (error) {
-      alert("An error occurred during sign up");
+      setError(
+        error?.response?.data?.message ||
+          error.message ||
+          "An error occurred during sign up"
+      );
     } finally {
       setIsLoading(false);
     }
@@ -47,6 +61,8 @@ const SignUp = () => {
           </h1>
           <p className="text-gray-400">Free for everyone.</p>
         </div>
+
+        {error && <div className="text-red-500 text-center">{error}</div>}
 
         <Button
           className="w-[35vh] mx-auto lg:w-full bg-white text-gray-900 flex items-center justify-center gap-3 hover:bg-gray-50"

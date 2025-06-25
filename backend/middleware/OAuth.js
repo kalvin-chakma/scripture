@@ -5,7 +5,6 @@ const User = require("../models/user");
 passport.serializeUser((user, done) => {
   done(null, user.id);
 });
-
 passport.deserializeUser(async (id, done) => {
   try {
     const user = await User.findById(id);
@@ -27,26 +26,24 @@ passport.use(
         const email = profile.emails?.[0]?.value;
         const photo = profile.photos?.[0]?.value;
 
-        if (!email) {
-          return done(new Error("No email found in Google profile"));
-        }
-
         let user = await User.findOne({ username: email });
+
+        if (user) {
+          return res.status(401).json({ message: "User already exits" });
+        }
 
         if (!user) {
           user = new User({
             googleId: profile.id,
             username: email,
             displayName: profile.displayName,
-            avatar: photo || "", // fallback to empty string
+            avatar: photo || "",
           });
 
           await user.save();
         }
-
         done(null, user);
       } catch (error) {
-        console.error("Error in GoogleStrategy callback:", error);
         done(error);
       }
     }
