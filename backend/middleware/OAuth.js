@@ -23,23 +23,14 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
-        const email = profile.emails?.[0]?.value;
-        const photo = profile.photos?.[0]?.value;
-
-        let user = await User.findOne({ username: email });
-
-        if (user) {
-          return res.status(401).json({ message: "User already exits" });
-        }
-
+        let user = await User.findOne({ googleId: profile.id });
         if (!user) {
           user = new User({
             googleId: profile.id,
-            username: email,
+            username: profile.emails[0].value,
             displayName: profile.displayName,
-            avatar: photo || "",
+            avatar: profile.photos[0].value,
           });
-
           await user.save();
         }
         done(null, user);
