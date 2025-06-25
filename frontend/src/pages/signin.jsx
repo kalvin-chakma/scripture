@@ -91,7 +91,7 @@ const SignIn = () => {
 
             <Button
               type="submit"
-              className="w-full px-4 py-2 rounded-md bg-gray-700 text-white"
+              className="w-full px-4 py-2 rounded-md bg-gray-700 text-white hover:bg-gray-500"
               disabled={isLoading}
             >
               {isLoading ? "Loading..." : "Sign in"}

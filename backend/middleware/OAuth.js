@@ -5,6 +5,7 @@ const User = require("../models/user");
 passport.serializeUser((user, done) => {
   done(null, user.id);
 });
+
 passport.deserializeUser(async (id, done) => {
   try {
     const user = await User.findById(id);
@@ -18,23 +19,34 @@ passport.use(
   new GoogleStrategy(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRECT,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL: "/user/auth/google/callback",
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
-        let user = await User.findOne({ googleId: profile.id });
+        const email = profile.emails?.[0]?.value;
+        const photo = profile.photos?.[0]?.value;
+
+        if (!email) {
+          return done(new Error("No email found in Google profile"));
+        }
+
+        let user = await User.findOne({ username: email });
+
         if (!user) {
           user = new User({
             googleId: profile.id,
-            username: profile.emails[0].value,
+            username: email,
             displayName: profile.displayName,
-            avatar: profile.photos[0].value,
+            avatar: photo || "", // fallback to empty string
           });
+
           await user.save();
         }
+
         done(null, user);
       } catch (error) {
+        console.error("Error in GoogleStrategy callback:", error);
         done(error);
       }
     }
