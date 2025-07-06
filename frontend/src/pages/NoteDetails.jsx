@@ -7,6 +7,7 @@ import Loader from "../components/loaders/Loader";
 import useUserStore from "../store/useUserStore";
 
 export default function NoteDetails() {
+  document.title = "Scripture | Note";
   const { theme } = useUserStore();
   const { id, title } = useParams();
   const [note, setNote] = useState(null);

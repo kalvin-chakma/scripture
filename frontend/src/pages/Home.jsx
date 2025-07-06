@@ -8,6 +8,7 @@ import { RxDragHandleDots2 } from "react-icons/rx";
 import NoteOptionsPopup from "../components/NoteOptionsPopup";
 
 export default function Home() {
+  document.title = "Scripture | Home";
   const navigate = useNavigate();
   const [columns, setColumns] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -97,7 +98,7 @@ export default function Home() {
                     {col.noteType}
                   </h3>
                 </div>
-                <div className="flex flex-col h-[50vh] gap-2 p-2 overflow-auto no-scrollbar">
+                <div className="flex flex-col gap-2 p-2 overflow-y-auto no-scrollbar pb-16">
                   {col.notes.map((note) => (
                     <div key={note.id}>
                       <div key={note.id} className="">
@@ -109,8 +110,8 @@ export default function Home() {
                             className="w-[100%] overflow-hidden p-2"
                           >
                             <div className="flex items-center space-x-2">
-                              <SiPinboard />
-                              <span>{note.title}</span>
+                              <SiPinboard className="w-3 h-3 flex-shrink-0" />
+                              <span className="truncate">{note.title}</span>
                             </div>
                           </Link>
 

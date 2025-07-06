@@ -6,6 +6,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import Button from "../components/ui/Button";
 
 const SignIn = () => {
+  document.title = "Scripture | Sign In";
   const [form, setForm] = useState({ username: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
   const { signIn } = useUserStore();

@@ -9,6 +9,7 @@ import Button from "../components/ui/Button";
 import "./md.css";
 
 const MarkdownNoteEditor = () => {
+  document.title = "Scripture | Note";
   const navigate = useNavigate();
   const location = useLocation();
   const { theme } = useUserStore();

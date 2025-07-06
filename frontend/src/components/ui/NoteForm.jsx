@@ -46,7 +46,7 @@ export default function NoteForm({ onClose }) {
         <label className="block text-sm font-medium mb-1">Title</label>
         <input
           type="text"
-          className="w-full border text-sm border-gray-300 rounded px-3 py-2 dark:bg-neutral-900 dark:text-gray-400 dark:border-gray-600"
+          className="w-full border text-sm border-gray-300 rounded px-3 py-2 dark:bg-neutral-900 dark:text-gray-200 dark:border-gray-600"
           placeholder="Enter note title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}

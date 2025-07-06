@@ -29,10 +29,10 @@ export default function Sidebar() {
       <div className="w-56 bg-white border-r border-gray-200 dark:bg-neutral-900 dark:text-gray-200 dark:border-gray-700 flex flex-col">
         <div className="px-5">
           <button
-            className="my-2 flex w-full p-2 text-xs text-center justify-center font-semibold border border-zinc-700 dark:hover:bg-zinc-600 hover:bg-gray-100 rounded"
+            className="my-2 flex w-full items-center justify-center p-2 text-xs font-semibold border border-zinc-700 rounded hover:bg-gray-100 dark:hover:bg-zinc-600"
             onClick={() => setShowNoteModal(true)}
           >
-            <IoAddOutline className="w-4 h-4 mr-2 " />
+            <IoAddOutline className="w-4 h-4 mr-2 flex-shrink-0" />
             Create Note
           </button>
         </div>
