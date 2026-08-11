@@ -11,7 +11,10 @@ dotenv.config();
 const app = express();
 app.use(
   cors({
-    origin: ["https://scripture-esqx.vercel.app", "http://localhost:5173"],
+    origin: (process.env.CORS_ORIGINS || "http://localhost:5173")
+      .split(",")
+      .map((origin) => origin.trim())
+      .filter(Boolean),
     credentials: true,
   })
 );

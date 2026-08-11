@@ -1,7 +1,6 @@
 import axios from "axios";
 
-export const API = "https://scripture-xi.vercel.app";
-//export const API = "http://localhost:3000";
+export const API = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
 const apiClient = axios.create({
   baseURL: API,

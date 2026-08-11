@@ -1,0 +1,19 @@
+{
+  "name": "scripture",
+  "private": true,
+  "version": "1.0.0",
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "concurrently -n api,web -c blue,green \"npm run dev -w @scripture/api\" \"npm run dev -w @scripture/web\"",
+    "dev:api": "npm run dev -w @scripture/api",
+    "dev:web": "npm run dev -w @scripture/web",
+    "build": "npm run build -w @scripture/web",
+    "lint": "npm run lint -w @scripture/web",
+    "preview": "npm run preview -w @scripture/web"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  }
+}

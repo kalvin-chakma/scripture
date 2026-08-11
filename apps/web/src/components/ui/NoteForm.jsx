@@ -35,9 +35,6 @@ export default function NoteForm({ onClose }) {
           <option value="markdown">Markdown</option>
           <option value="general">General</option>
           <option value="todo">To-do</option>
-          <option value="markdown">Markdown</option>
-          <option value="general">General</option>
-          <option value="todo">To-do</option>
         </select>
       </div>
 
