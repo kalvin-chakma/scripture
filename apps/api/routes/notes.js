@@ -1,5 +1,5 @@
 const express = require("express");
-const Note = require("../models/note");
+const prisma = require("@scripture/db");
 const { authenticateJWT } = require("../middleware/auth");
 
 const router = express.Router();
@@ -13,14 +13,15 @@ router.post("/save", authenticateJWT, async (req, res) => {
   }
 
   try {
-    const newNote = new Note({
-      user_id: req.user_id,
-      title,
-      noteType: noteType,
-      content,
+    const newNote = await prisma.note.create({
+      data: {
+        userId: req.user_id,
+        title,
+        noteType: noteType,
+        content,
+      },
     });
 
-    await newNote.save();
     res.status(201).json({ message: "Note saved successfully", note: newNote });
   } catch (error) {
     res.status(500).json({ message: "Failed to save note", error });
@@ -31,7 +32,10 @@ router.post("/save", authenticateJWT, async (req, res) => {
 router.get("/my-notes", authenticateJWT, async (req, res) => {
   try {
     const userId = req.user_id;
-    const notes = await Note.find({ user_id: userId }).sort({ createdAt: -1 });
+    const notes = await prisma.note.findMany({
+      where: { userId },
+      orderBy: { createdAt: "desc" },
+    });
 
     res.status(200).json({ notes });
   } catch (error) {
@@ -44,17 +48,20 @@ router.put("/update/:id", authenticateJWT, async (req, res) => {
   const { title, content, noteType } = req.body;
 
   try {
-    const updatedNote = await Note.findOneAndUpdate(
-      { _id: req.params.id, user_id: req.user_id },
-      { title: title, content: content, noteType: noteType },
-      { new: true }
-    );
+    const { count } = await prisma.note.updateMany({
+      where: { id: req.params.id, userId: req.user_id },
+      data: { title, content, noteType },
+    });
 
-    if (!updatedNote) {
+    if (count === 0) {
       return res
         .status(404)
         .json({ message: "Note not found or unauthorized" });
     }
+
+    const updatedNote = await prisma.note.findUnique({
+      where: { id: req.params.id },
+    });
 
     res
       .status(200)
@@ -67,12 +74,11 @@ router.put("/update/:id", authenticateJWT, async (req, res) => {
 // Delete note by ID
 router.delete("/delete/:id", authenticateJWT, async (req, res) => {
   try {
-    const deletedNote = await Note.findOneAndDelete({
-      _id: req.params.id,
-      user_id: req.user_id,
+    const { count } = await prisma.note.deleteMany({
+      where: { id: req.params.id, userId: req.user_id },
     });
 
-    if (!deletedNote) {
+    if (count === 0) {
       return res
         .status(404)
         .json({ message: "Note not found or unauthorized" });

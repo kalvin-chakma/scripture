@@ -22,7 +22,7 @@ export default function NoteDetails() {
         const response = await getNote();
         const notes = response.data.notes;
 
-        const foundNote = notes.find((note) => note._id === id);
+        const foundNote = notes.find((note) => note.id === id);
         if (foundNote) {
           setNote(foundNote);
         } else {
@@ -81,6 +81,28 @@ export default function NoteDetails() {
               source={note.content}
               className="prose dark:prose-invert max-w-none"
             />
+          </div>
+        ) : note.noteType === "todo" ? (
+          <div className="space-y-2 max-w-2xl mx-auto">
+            {JSON.parse(note.content || "[]").map((item) => (
+              <div key={item.id} className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  checked={item.done}
+                  readOnly
+                  className="w-4 h-4 flex-shrink-0"
+                />
+                <span
+                  className={
+                    item.done
+                      ? "line-through text-gray-400 dark:text-gray-500"
+                      : "dark:text-white"
+                  }
+                >
+                  {item.text}
+                </span>
+              </div>
+            ))}
           </div>
         ) : (
           <ContentEditor

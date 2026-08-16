@@ -1,7 +1,7 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const User = require("../models/user");
+const prisma = require("@scripture/db");
 const { SECRET } = require("../middleware/auth");
 const passport = require("passport");
 
@@ -18,14 +18,15 @@ router.post("/signup", async (req, res) => {
         .json({ message: "Username and password are required" });
     }
 
-    const existingUser = await User.findOne({ username });
+    const existingUser = await prisma.user.findUnique({ where: { username } });
     if (existingUser) {
       return res.status(403).json({ message: "User already exists" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({ username, password: hashedPassword });
-    await newUser.save();
+    await prisma.user.create({
+      data: { username, password: hashedPassword },
+    });
 
     res
       .status(201)
@@ -43,7 +44,7 @@ router.post("/signin", async (req, res) => {
   const { username, password } = req.body;
 
   try {
-    const user = await User.findOne({ username });
+    const user = await prisma.user.findUnique({ where: { username } });
     if (!user) {
       return res.status(401).json({ message: "Invalid username or password" });
     }
@@ -53,9 +54,9 @@ router.post("/signin", async (req, res) => {
       return res.status(401).json({ message: "Invalid username or password" });
     }
 
-    const token = jwt.sign({ userID: user._id }, SECRET, { expiresIn: "1h" });
+    const token = jwt.sign({ userID: user.id }, SECRET, { expiresIn: "1h" });
 
-    res.json({ message: "Logged in successfully", token, User });
+    res.json({ message: "Logged in successfully", token });
   } catch (error) {
     res.status(500).json({ message: "Error signing in", error: error.message });
   }
@@ -75,7 +76,7 @@ router.get(
   }),
   (req, res) => {
     const token = jwt.sign(
-      { userID: req.user._id, username: req.user.username },
+      { userID: req.user.id, username: req.user.username },
       SECRET,
       { expiresIn: "1h" }
     );
@@ -92,7 +93,16 @@ router.get("/userdata", async (req, res) => {
       return res.status(401).json({ message: "Unauthorized" });
     }
     const decoded = jwt.verify(token, SECRET);
-    const user = await User.findById(decoded.userID).select("-password");
+    const user = await prisma.user.findUnique({
+      where: { id: decoded.userID },
+      select: {
+        id: true,
+        username: true,
+        displayName: true,
+        avatar: true,
+        googleId: true,
+      },
+    });
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }

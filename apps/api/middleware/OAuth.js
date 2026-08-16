@@ -1,13 +1,13 @@
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
-const User = require("../models/user");
+const prisma = require("@scripture/db");
 
 passport.serializeUser((user, done) => {
   done(null, user.id);
 });
 passport.deserializeUser(async (id, done) => {
   try {
-    const user = await User.findById(id);
+    const user = await prisma.user.findUnique({ where: { id } });
     done(null, user);
   } catch (error) {
     done(error);
@@ -23,15 +23,18 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
-        let user = await User.findOne({ googleId: profile.id });
+        let user = await prisma.user.findUnique({
+          where: { googleId: profile.id },
+        });
         if (!user) {
-          user = new User({
-            googleId: profile.id,
-            username: profile.emails[0].value,
-            displayName: profile.displayName,
-            avatar: profile.photos[0].value,
+          user = await prisma.user.create({
+            data: {
+              googleId: profile.id,
+              username: profile.emails[0].value,
+              displayName: profile.displayName,
+              avatar: profile.photos[0].value,
+            },
           });
-          await user.save();
         }
         done(null, user);
       } catch (error) {

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import ContentEditor from "../components/general-editor/contentEditor";
-import { getNote, saveNote } from "../services/api";
+import { getNote, saveNote, updateNote } from "../services/api";
 import Button from "../components/ui/Button";
 import { RiArrowLeftSFill, RiSave2Fill } from "react-icons/ri";
 import useUserStore from "../store/useUserStore";
@@ -44,7 +44,7 @@ const GeneralNoteEditor = () => {
         try {
           const response = await getNote();
           const notes = response.data.notes;
-          const foundNote = notes.find((note) => note._id === id);
+          const foundNote = notes.find((note) => note.id === id);
 
           if (foundNote) {
             setEditorData(JSON.parse(foundNote.content));
@@ -73,13 +73,16 @@ const GeneralNoteEditor = () => {
       const contentString = JSON.stringify(editorData);
 
       const payload = {
-        id,
         title,
         content: contentString,
         noteType,
       };
 
-      await saveNote(payload);
+      if (isEditMode) {
+        await updateNote(id, payload);
+      } else {
+        await saveNote(payload);
+      }
       alert("Note saved!");
       navigate("/home");
     } catch (error) {

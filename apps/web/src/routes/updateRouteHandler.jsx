@@ -2,6 +2,7 @@ import React from "react";
 import { useLocation, useParams, Navigate } from "react-router-dom";
 import MarkdownNoteEditor from "../note-editor/MarkdownNoteEditor";
 import GeneralNoteEditor from "../note-editor/GeneralNoteEditor";
+import TodoNoteEditor from "../note-editor/TodoNoteEditor";
 
 const updateRouteHandler = () => {
   const location = useLocation();
@@ -13,6 +14,7 @@ const updateRouteHandler = () => {
   const editorMap = {
     markdown: MarkdownNoteEditor,
     general: GeneralNoteEditor,
+    todo: TodoNoteEditor,
   };
 
   const EditorComponent =

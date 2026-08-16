@@ -66,7 +66,7 @@ const useUserStore = create((set) => ({
   },
 
   googleSignIn: async () => {
-    window.location.href = "https://scripture-xi.vercel.app/user/auth/google/";
+    window.location.href = `${API}/user/auth/google`;
   },
 
   //signout state

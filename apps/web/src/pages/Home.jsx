@@ -40,7 +40,7 @@ export default function Home() {
           }
         });
 
-        data.notes.forEach(({ _id, title, content, noteType }) => {
+        data.notes.forEach(({ id, title, content, noteType }) => {
           const type = noteType || "Untitled";
           if (!groupedNotes[type]) {
             groupedNotes[type] = {
@@ -49,7 +49,7 @@ export default function Home() {
               notes: [],
             };
           }
-          groupedNotes[type].notes.unshift({ id: _id, title, content });
+          groupedNotes[type].notes.unshift({ id, title, content });
         });
 
         const orderedColumns = order.map(

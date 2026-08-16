@@ -36,7 +36,7 @@ const MarkdownNoteEditor = () => {
         try {
           const response = await getNote();
           const notes = response.data.notes;
-          const foundNote = notes.find((note) => note._id === id);
+          const foundNote = notes.find((note) => note.id === id);
 
           if (foundNote) {
             setTitle(foundNote.title);
