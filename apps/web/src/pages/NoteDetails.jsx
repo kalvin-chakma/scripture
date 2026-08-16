@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getNote } from "../services/api";
 import MarkdownEditor from "@uiw/react-markdown-editor";
-import ContentEditor from "../components/general-editor/contentEditor";
+import BlockNoteEditor from "../components/general-editor/BlockNoteEditor";
 import Loader from "../components/loaders/Loader";
 import useUserStore from "../store/useUserStore";
 
@@ -46,8 +46,8 @@ export default function NoteDetails() {
     <div
       className={`px-4 sm:px-6 lg:px-8 py-6 max-w-4xl mx-auto w-screen h-screen${
         note.noteType === "markdown"
-          ? "dark:text-white dark:bg-[#0d1117]"
-          : "dark:bg-[#0d1117] "
+          ? "dark:text-white dark:bg-[#1f1f1f]"
+          : "dark:bg-[#1f1f1f] "
       }`}
     >
       <div>
@@ -105,10 +105,12 @@ export default function NoteDetails() {
             ))}
           </div>
         ) : (
-          <ContentEditor
+          <BlockNoteEditor
             data={JSON.parse(note.content)}
             onChange={() => {}}
-            editorBlock="editorjs-container"
+            editorBlock="blocknote-container"
+            theme={theme}
+            editable={false}
           />
         )}
       </div>

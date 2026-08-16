@@ -85,7 +85,7 @@ const MarkdownNoteEditor = () => {
   const goBack = () => navigate(-1);
 
   return (
-    <div className="p-2 mx-auto dark:bg-[#161a21] dark:text-white h-screen">
+    <div className="p-2 mx-auto dark:bg-[#1f1f1f] dark:text-white h-screen">
       <div className="flex justify-between items-center px-1 mb-1">
         <Button
           onClick={goBack}

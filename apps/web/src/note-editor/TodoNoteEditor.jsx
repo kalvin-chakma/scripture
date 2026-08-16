@@ -106,7 +106,7 @@ const TodoNoteEditor = () => {
   const goBack = () => navigate(-1);
 
   return (
-    <div className="max-w-3xl mx-auto p-5 dark:bg-[#0d1117] dark:text-white h-screen">
+    <div className="max-w-3xl mx-auto p-5 dark:bg-[#1f1f1f] dark:text-white h-screen">
       <div className="flex justify-between items-center px-1 mb-4">
         <Button
           onClick={goBack}
@@ -140,7 +140,7 @@ const TodoNoteEditor = () => {
           <HomeLoader />
         </div>
       ) : (
-        <div className="bg-white dark:bg-neutral-900 rounded-lg shadow-md p-4 space-y-4">
+        <div className="bg-white dark:bg-[#1f1f1f] rounded-lg shadow-md p-4 space-y-4">
           <input
             type="text"
             className="w-full text-lg font-semibold bg-transparent border-b border-gray-300 dark:border-gray-600 focus:outline-none py-1 dark:text-white"

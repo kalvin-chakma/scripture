@@ -8,7 +8,7 @@ export default function BaseLayout() {
         <Navbar />
       </header>
 
-      <main className="h-full overflow-auto no-scrollbar dark:bg-neutral-900 dark:text-gray-200">
+      <main className="h-full overflow-auto no-scrollbar dark:bg-[#1f1f1f] dark:text-gray-200">
         <Outlet />
       </main>
 

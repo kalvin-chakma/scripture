@@ -4,7 +4,7 @@ import { RiEdit2Fill, RiDeleteBin5Fill } from "react-icons/ri";
 
 export default function NoteOptionsPopup({ onEdit, onDelete }) {
   return (
-    <div className="absolute top-6 right-0 z-10 w-28 bg-white border border-gray-200 shadow-lg rounded-lg  dark:bg-neutral-900 dark:border-gray-600">
+    <div className="absolute top-6 right-0 z-10 w-28 bg-white border border-gray-200 shadow-lg rounded-lg  dark:bg-[#1f1f1f] dark:border-gray-600">
       <Button
         onClick={onEdit}
         className="flex w-full text-left px-4 py-2 text-xs text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-neutral-700"

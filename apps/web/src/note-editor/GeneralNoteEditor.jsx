@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import ContentEditor from "../components/general-editor/contentEditor";
+import BlockNoteEditor from "../components/general-editor/BlockNoteEditor";
 import { getNote, saveNote, updateNote } from "../services/api";
 import Button from "../components/ui/Button";
 import { RiArrowLeftSFill, RiSave2Fill } from "react-icons/ri";
@@ -21,18 +21,7 @@ const GeneralNoteEditor = () => {
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(isEditMode);
 
-  const [editorData, setEditorData] = useState({
-    time: new Date().getTime(),
-    blocks: [
-      {
-        type: "header",
-        data: {
-          text: "",
-          level: 2,
-        },
-      },
-    ],
-  });
+  const [editorData, setEditorData] = useState([]);
 
   useEffect(() => {
     document.documentElement.setAttribute("data-color-mode", theme);
@@ -99,7 +88,7 @@ const GeneralNoteEditor = () => {
   const goBack = () => navigate(-1);
 
   return (
-    <div className="max-w-5xl mx-auto p-5 dark:bg-[#0d1117] dark:text-white h-screen">
+    <div className="max-w-5xl mx-auto p-5 dark:bg-[#1f1f1f] dark:text-white h-screen flex flex-col">
       <div className="flex justify-between items-center px-1 mb-1">
         <Button
           onClick={goBack}
@@ -133,11 +122,11 @@ const GeneralNoteEditor = () => {
           <HomeLoader />
         </div>
       ) : (
-        <div className="bg-white rounded-lg shadow-md w-full">
-          <ContentEditor
+        <div className="bg-white dark:bg-[#1f1f1f] w-full flex-1 overflow-y-auto no-scrollbar">
+          <BlockNoteEditor
             data={editorData}
             onChange={handleChange}
-            editorBlock="editorjs-container"
+            editorBlock="blocknote-container"
             theme={theme}
           />
         </div>
