@@ -53,6 +53,7 @@ export default function NoteForm({ onClose }) {
       {/* Actions */}
       <div className="flex flex-col sm:flex-row justify-end sm:space-x-2 space-y-2 sm:space-y-0">
         <button
+          type="button"
           onClick={onClose}
           className="flex items-center justify-center bg-gray-100 text-sm font-semibold text-gray-700 dark:bg-white/10 dark:text-gray-300 px-4 py-2 rounded-lg transition-colors duration-150 hover:bg-gray-200 dark:hover:bg-white/20 cursor-pointer h-[4vh] w-full sm:w-24"
         >

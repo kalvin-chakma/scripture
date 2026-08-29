@@ -1,10 +1,15 @@
-import React, { useState, useEffect, useCallback, useMemo } from "react";
+import React, { useState, useEffect, useCallback, useMemo, useRef } from "react";
+import { createPortal } from "react-dom";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import MarkdownEditor from "@uiw/react-markdown-editor";
 import { saveNote, getNote, updateNote } from "../services/api";
 import HomeLoader from "../components/loaders/homeLoader";
 import { RiArrowLeftSFill, RiSave2Fill } from "react-icons/ri";
 import Button from "../components/ui/Button";
+import {
+  markdownRemarkPlugins,
+  markdownRemarkRehypeOptions,
+} from "./markdownPlugins";
 import "./md.css";
 
 const MarkdownNoteEditor = () => {
@@ -22,6 +27,54 @@ const MarkdownNoteEditor = () => {
   const [markdown, setMarkdown] = useState("# Write your Markdown");
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(isEditMode);
+
+  // Draggable divider between the markdown editor and the preview pane
+  const [previewWidthPercent, setPreviewWidthPercent] = useState(50);
+  const editorWrapperRef = useRef(null);
+  const [splitContainerEl, setSplitContainerEl] = useState(null);
+  const draggingRef = useRef(false);
+  const [isDividerDragging, setIsDividerDragging] = useState(false);
+
+  useEffect(() => {
+    if (!editorWrapperRef.current) return;
+    const el = editorWrapperRef.current.querySelector(".md-editor-content");
+    setSplitContainerEl(el || null);
+  }, [loading]);
+
+  const handleDividerDragStart = useCallback((e) => {
+    e.preventDefault();
+    draggingRef.current = true;
+    setIsDividerDragging(true);
+    document.body.style.cursor = "col-resize";
+    document.body.style.userSelect = "none";
+  }, []);
+
+  useEffect(() => {
+    const handleMove = (e) => {
+      if (!draggingRef.current || !splitContainerEl) return;
+      const rect = splitContainerEl.getBoundingClientRect();
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const nextPreviewPercent = ((rect.right - clientX) / rect.width) * 100;
+      setPreviewWidthPercent(Math.min(80, Math.max(20, nextPreviewPercent)));
+    };
+    const handleUp = () => {
+      if (!draggingRef.current) return;
+      draggingRef.current = false;
+      setIsDividerDragging(false);
+      document.body.style.cursor = "";
+      document.body.style.userSelect = "";
+    };
+    window.addEventListener("mousemove", handleMove);
+    window.addEventListener("mouseup", handleUp);
+    window.addEventListener("touchmove", handleMove);
+    window.addEventListener("touchend", handleUp);
+    return () => {
+      window.removeEventListener("mousemove", handleMove);
+      window.removeEventListener("mouseup", handleUp);
+      window.removeEventListener("touchmove", handleMove);
+      window.removeEventListener("touchend", handleUp);
+    };
+  }, [splitContainerEl]);
 
   // Fetch note for editing
   useEffect(() => {
@@ -88,9 +141,14 @@ const MarkdownNoteEditor = () => {
         visible={true}
         value={markdown}
         onChange={handleMarkdownChange}
+        previewWidth={`${previewWidthPercent}%`}
+        previewProps={{
+          remarkPlugins: markdownRemarkPlugins,
+          remarkRehypeOptions: markdownRemarkRehypeOptions,
+        }}
       />
     ),
-    [markdown, handleMarkdownChange]
+    [markdown, handleMarkdownChange, previewWidthPercent]
   );
 
   return (
@@ -126,7 +184,41 @@ const MarkdownNoteEditor = () => {
           <HomeLoader />
         </div>
       ) : (
-        <div className="w-full">{markdownEditor}</div>
+        <div className="w-full" ref={editorWrapperRef}>
+          {markdownEditor}
+          {splitContainerEl &&
+            createPortal(
+              <div
+                onMouseDown={handleDividerDragStart}
+                onTouchStart={handleDividerDragStart}
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  bottom: 0,
+                  left: `calc(${100 - previewWidthPercent}% - 4px)`,
+                  width: "8px",
+                  cursor: "col-resize",
+                  zIndex: 20,
+                  display: "flex",
+                  justifyContent: "center",
+                }}
+              >
+                <div
+                  style={{
+                    width: isDividerDragging ? "4px" : "0px",
+                    height: "100%",
+                    backgroundColor: isDividerDragging
+                      ? "#3b82f6"
+                      : "transparent",
+                    transition: isDividerDragging
+                      ? "none"
+                      : "width 0.15s ease, background-color 0.15s ease",
+                  }}
+                />
+              </div>,
+              splitContainerEl
+            )}
+        </div>
       )}
     </div>
   );

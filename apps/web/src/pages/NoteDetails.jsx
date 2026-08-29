@@ -1,12 +1,6 @@
 import { useParams } from "react-router-dom";
-import {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { getNote, updateNote } from "../services/api";
 import MarkdownEditor from "@uiw/react-markdown-editor";
 import BlockNoteEditor from "../components/general-editor/BlockNoteEditor";
@@ -14,6 +8,10 @@ import Loader from "../components/loaders/Loader";
 import { useTheme } from "next-themes";
 import { IoAddOutline, IoTrashOutline } from "react-icons/io5";
 import useNoteViewStore from "../store/useNoteViewStore";
+import {
+  markdownRemarkPlugins,
+  markdownRemarkRehypeOptions,
+} from "../note-editor/markdownPlugins";
 import "../note-editor/md.css";
 
 let todoIdCounter = 0;
@@ -38,6 +36,15 @@ export default function NoteDetails() {
   const draftRef = useRef({ title: "", content: "" });
   const loadedRef = useRef(false);
   const saveTimeoutRef = useRef(null);
+
+  // Draggable divider between the markdown editor and the preview pane
+  const [previewWidthPercent, setPreviewWidthPercent] = useState(50);
+  const editorWrapperRef = useRef(null);
+  const [splitContainerEl, setSplitContainerEl] = useState(null);
+  const draggingRef = useRef(false);
+  const [isDividerDragging, setIsDividerDragging] = useState(false);
+
+  const isMarkdownEditing = note?.noteType === "markdown" && isEditing;
 
   // Every note opens in the read-only rendering view; editing only starts
   // once the Navbar's Edit button is clicked.
@@ -122,6 +129,47 @@ export default function NoteDetails() {
     [persist]
   );
 
+  useEffect(() => {
+    if (!isMarkdownEditing || !editorWrapperRef.current) return;
+    const el = editorWrapperRef.current.querySelector(".md-editor-content");
+    setSplitContainerEl(el || null);
+  }, [isMarkdownEditing]);
+
+  const handleDividerDragStart = useCallback((e) => {
+    e.preventDefault();
+    draggingRef.current = true;
+    setIsDividerDragging(true);
+    document.body.style.cursor = "col-resize";
+    document.body.style.userSelect = "none";
+  }, []);
+
+  useEffect(() => {
+    const handleMove = (e) => {
+      if (!draggingRef.current || !splitContainerEl) return;
+      const rect = splitContainerEl.getBoundingClientRect();
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const nextPreviewPercent = ((rect.right - clientX) / rect.width) * 100;
+      setPreviewWidthPercent(Math.min(80, Math.max(20, nextPreviewPercent)));
+    };
+    const handleUp = () => {
+      if (!draggingRef.current) return;
+      draggingRef.current = false;
+      setIsDividerDragging(false);
+      document.body.style.cursor = "";
+      document.body.style.userSelect = "";
+    };
+    window.addEventListener("mousemove", handleMove);
+    window.addEventListener("mouseup", handleUp);
+    window.addEventListener("touchmove", handleMove);
+    window.addEventListener("touchend", handleUp);
+    return () => {
+      window.removeEventListener("mousemove", handleMove);
+      window.removeEventListener("mouseup", handleUp);
+      window.removeEventListener("touchmove", handleMove);
+      window.removeEventListener("touchend", handleUp);
+    };
+  }, [splitContainerEl]);
+
   const handleEditorChange = useCallback(
     (data) => {
       setEditorData(data);
@@ -165,51 +213,6 @@ export default function NoteDetails() {
     });
   };
 
-  // Drag-to-resize the markdown source/preview split. The library renders
-  // both panes with plain inline widths (no drag handle of its own), so we
-  // mutate them directly by DOM query instead of piping every mousemove
-  // through React state - that's what keeps the drag smooth.
-  const editorSplitRef = useRef(null);
-  const [splitPercent, setSplitPercent] = useState(() => {
-    const stored = Number(localStorage.getItem("md-editor-split"));
-    return Number.isFinite(stored) && stored >= 20 && stored <= 80 ? stored : 50;
-  });
-  const [dividerTop, setDividerTop] = useState(0);
-
-  const applySplit = useCallback((percent) => {
-    const wrap = editorSplitRef.current;
-    if (!wrap) return;
-    const editorPane = wrap.querySelector(".md-editor-content-editor");
-    const previewPane = wrap.querySelector(".md-editor-preview");
-    if (editorPane) editorPane.style.width = `${percent}%`;
-    if (previewPane) previewPane.style.width = `${100 - percent}%`;
-  }, []);
-
-  const measureDividerTop = useCallback(() => {
-    const wrap = editorSplitRef.current;
-    if (!wrap) return;
-    const content = wrap.querySelector(".md-editor-content");
-    if (!content) return;
-    setDividerTop(content.getBoundingClientRect().top - wrap.getBoundingClientRect().top);
-  }, []);
-
-  const isMarkdownEditing = note?.noteType === "markdown" && isEditing;
-
-  useLayoutEffect(() => {
-    if (!isMarkdownEditing) return;
-    applySplit(splitPercent);
-    measureDividerTop();
-
-    const wrap = editorSplitRef.current;
-    if (!wrap || typeof ResizeObserver === "undefined") return;
-    const observer = new ResizeObserver(measureDividerTop);
-    observer.observe(wrap);
-    return () => observer.disconnect();
-    // Only re-run when the split editor mounts/unmounts - the drag handler
-    // below applies further width changes imperatively.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isMarkdownEditing]);
-
   // The read-only render can be hundreds of nodes for a long note; @uiw's
   // Markdown component isn't memoized internally, so it re-parses the whole
   // document on every re-render. Memoize it on content alone so a theme
@@ -219,41 +222,11 @@ export default function NoteDetails() {
       <MarkdownEditor.Markdown
         source={markdown}
         className="prose dark:prose-invert max-w-none"
+        remarkPlugins={markdownRemarkPlugins}
+        remarkRehypeOptions={markdownRemarkRehypeOptions}
       />
     ),
     [markdown]
-  );
-
-  const handleDividerPointerDown = useCallback(
-    (e) => {
-      e.preventDefault();
-      const wrap = editorSplitRef.current;
-      if (!wrap) return;
-      const rect = wrap.getBoundingClientRect();
-      let current = splitPercent;
-
-      const onMove = (moveEvent) => {
-        let percent = ((moveEvent.clientX - rect.left) / rect.width) * 100;
-        percent = Math.min(80, Math.max(20, percent));
-        current = percent;
-        applySplit(percent);
-        setSplitPercent(percent);
-      };
-
-      const onUp = () => {
-        window.removeEventListener("pointermove", onMove);
-        window.removeEventListener("pointerup", onUp);
-        document.body.style.cursor = "";
-        document.body.style.userSelect = "";
-        localStorage.setItem("md-editor-split", String(current));
-      };
-
-      document.body.style.cursor = "col-resize";
-      document.body.style.userSelect = "none";
-      window.addEventListener("pointermove", onMove);
-      window.addEventListener("pointerup", onUp);
-    },
-    [applySplit, splitPercent]
   );
 
   if (!note)
@@ -311,7 +284,7 @@ export default function NoteDetails() {
         </div>
 
         <div
-          ref={editorSplitRef}
+          ref={editorWrapperRef}
           className={`markdown-editor relative flex-1 min-h-0 ${
             theme === "dark" ? "dark" : "light"
           }`}
@@ -322,17 +295,44 @@ export default function NoteDetails() {
             visible={true}
             value={markdown}
             onChange={handleMarkdownChange}
+            previewWidth={`${previewWidthPercent}%`}
+            previewProps={{
+              remarkPlugins: markdownRemarkPlugins,
+              remarkRehypeOptions: markdownRemarkRehypeOptions,
+            }}
           />
-          <div
-            role="separator"
-            aria-orientation="vertical"
-            aria-label="Resize editor and preview"
-            onPointerDown={handleDividerPointerDown}
-            style={{ top: dividerTop, left: `calc(${splitPercent}% - 4px)` }}
-            className="absolute bottom-0 z-20 flex w-2 touch-none justify-center group/divider cursor-col-resize"
-          >
-            <div className="h-full w-px bg-gray-300 transition-colors duration-150 group-hover/divider:bg-blue-400 group-active/divider:bg-blue-500 dark:bg-neutral-700 dark:group-hover/divider:bg-blue-500" />
-          </div>
+          {splitContainerEl &&
+            createPortal(
+              <div
+                onMouseDown={handleDividerDragStart}
+                onTouchStart={handleDividerDragStart}
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  bottom: 0,
+                  left: `calc(${100 - previewWidthPercent}% - 4px)`,
+                  width: "8px",
+                  cursor: "col-resize",
+                  zIndex: 20,
+                  display: "flex",
+                  justifyContent: "center",
+                }}
+              >
+                <div
+                  style={{
+                    width: isDividerDragging ? "4px" : "0px",
+                    height: "100%",
+                    backgroundColor: isDividerDragging
+                      ? "#3b82f6"
+                      : "transparent",
+                    transition: isDividerDragging
+                      ? "none"
+                      : "width 0.15s ease, background-color 0.15s ease",
+                  }}
+                />
+              </div>,
+              splitContainerEl
+            )}
         </div>
       </div>
     );
