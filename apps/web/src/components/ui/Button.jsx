@@ -12,7 +12,7 @@ const Button = ({
       type={type}
       onClick={onClick}
       disabled={disabled}
-      className={`py-2 rounded-lg font-medium transition-colors ${className}`}
+      className={`py-2 rounded-lg font-medium transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500/60 ${className}`}
     >
       {children}
     </button>

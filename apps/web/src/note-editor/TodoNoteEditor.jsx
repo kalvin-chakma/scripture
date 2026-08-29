@@ -4,7 +4,6 @@ import { getNote, saveNote, updateNote } from "../services/api";
 import Button from "../components/ui/Button";
 import { RiArrowLeftSFill, RiSave2Fill } from "react-icons/ri";
 import { IoAddOutline, IoTrashOutline } from "react-icons/io5";
-import useUserStore from "../store/useUserStore";
 import HomeLoader from "../components/loaders/homeLoader";
 
 let idCounter = 0;
@@ -13,7 +12,6 @@ const emptyItem = () => ({ id: makeItemId(), text: "", done: false });
 
 const TodoNoteEditor = () => {
   document.title = "Scripture | Note";
-  const { theme } = useUserStore();
   const location = useLocation();
   const navigate = useNavigate();
   const { id } = useParams();
@@ -26,10 +24,6 @@ const TodoNoteEditor = () => {
   const [items, setItems] = useState([emptyItem()]);
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(isEditMode);
-
-  useEffect(() => {
-    document.documentElement.setAttribute("data-color-mode", theme);
-  }, [theme]);
 
   useEffect(() => {
     if (isEditMode) {
@@ -111,7 +105,7 @@ const TodoNoteEditor = () => {
         <Button
           onClick={goBack}
           disabled={saving}
-          className="flex items-center text-black/60 text-sm rounded-md border-none hover:text-black dark:text-white/70 dark:hover:text-white"
+          className="flex items-center gap-0.5 text-black/60 text-sm rounded-lg border-none px-2 py-1 transition-colors duration-150 hover:text-black hover:bg-gray-100 dark:text-white/70 dark:hover:text-white dark:hover:bg-white/10"
         >
           <RiArrowLeftSFill className="w-5 h-5 dark:text-white/70 dark:hover:text-white" />
           <span>Back</span>
@@ -124,10 +118,10 @@ const TodoNoteEditor = () => {
         <Button
           onClick={saveNoteHandler}
           disabled={saving}
-          className={`flex items-center text-black px-4 text-xs py-1.5 rounded-md ${
+          className={`flex items-center gap-1.5 text-white px-4 text-xs py-1.5 rounded-lg shadow-sm transition-all duration-150 ${
             saving
               ? "bg-green-400 cursor-not-allowed"
-              : "bg-green-500 hover:bg-green-600"
+              : "bg-green-600 hover:bg-green-700 hover:shadow-md"
           }`}
         >
           <RiSave2Fill className="w-5 h-5" />

@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import MarkdownEditor from "@uiw/react-markdown-editor";
 import { saveNote, getNote, updateNote } from "../services/api";
 import HomeLoader from "../components/loaders/homeLoader";
-import useUserStore from "../store/useUserStore";
 import { RiArrowLeftSFill, RiSave2Fill } from "react-icons/ri";
 import Button from "../components/ui/Button";
 import "./md.css";
@@ -12,7 +11,6 @@ const MarkdownNoteEditor = () => {
   document.title = "Scripture | Note";
   const navigate = useNavigate();
   const location = useLocation();
-  const { theme } = useUserStore();
   const { id, title: paramTitle } = useParams();
   const { title: stateTitle, noteType } = location.state || {};
 
@@ -24,10 +22,6 @@ const MarkdownNoteEditor = () => {
   const [markdown, setMarkdown] = useState("# Write your Markdown");
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(isEditMode);
-
-  useEffect(() => {
-    document.documentElement.setAttribute("data-color-mode", theme);
-  }, [theme]);
 
   // Fetch note for editing
   useEffect(() => {
@@ -84,13 +78,28 @@ const MarkdownNoteEditor = () => {
 
   const goBack = () => navigate(-1);
 
+  const handleMarkdownChange = useCallback((value) => setMarkdown(value), []);
+
+  const markdownEditor = useMemo(
+    () => (
+      <MarkdownEditor
+        height="85vh"
+        preview="live"
+        visible={true}
+        value={markdown}
+        onChange={handleMarkdownChange}
+      />
+    ),
+    [markdown, handleMarkdownChange]
+  );
+
   return (
     <div className="p-2 mx-auto dark:bg-[#1f1f1f] dark:text-white h-screen">
       <div className="flex justify-between items-center px-1 mb-1">
         <Button
           onClick={goBack}
           disabled={saving}
-          className="flex items-center text-black/60 text-sm rounded-md border-none hover:text-black dark:text-white/70 dark:hover:text-white"
+          className="flex items-center gap-0.5 text-black/60 text-sm rounded-lg border-none px-2 py-1 transition-colors duration-150 hover:text-black hover:bg-gray-100 dark:text-white/70 dark:hover:text-white dark:hover:bg-white/10"
         >
           <RiArrowLeftSFill className="w-5 h-5 dark:text-white/70 dark:hover:text-white" />
           <span>Back</span>
@@ -102,10 +111,10 @@ const MarkdownNoteEditor = () => {
         <Button
           onClick={saveNoteHandler}
           disabled={saving}
-          className={`flex items-center  text-black px-4 text-xs py-1.5 rounded-md ${
+          className={`flex items-center gap-1.5 text-white px-4 text-xs py-1.5 rounded-lg shadow-sm transition-all duration-150 ${
             saving
               ? "bg-green-400 cursor-not-allowed"
-              : "bg-green-500 hover:bg-green-600"
+              : "bg-green-600 hover:bg-green-700 hover:shadow-md"
           }`}
         >
           <RiSave2Fill className="w-5 h-5 " />
@@ -117,15 +126,7 @@ const MarkdownNoteEditor = () => {
           <HomeLoader />
         </div>
       ) : (
-        <div className="w-full">
-          <MarkdownEditor
-            height="85vh"
-            preview="live"
-            visible={true}
-            value={markdown}
-            onChange={(value) => setMarkdown(value)}
-          />
-        </div>
+        <div className="w-full">{markdownEditor}</div>
       )}
     </div>
   );

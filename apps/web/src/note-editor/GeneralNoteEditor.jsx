@@ -4,11 +4,11 @@ import BlockNoteEditor from "../components/general-editor/BlockNoteEditor";
 import { getNote, saveNote, updateNote } from "../services/api";
 import Button from "../components/ui/Button";
 import { RiArrowLeftSFill, RiSave2Fill } from "react-icons/ri";
-import useUserStore from "../store/useUserStore";
+import { useTheme } from "next-themes";
 import HomeLoader from "../components/loaders/homeLoader";
 
 const GeneralNoteEditor = () => {
-  const { theme } = useUserStore();
+  const { theme } = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
   const { id } = useParams();
@@ -22,10 +22,6 @@ const GeneralNoteEditor = () => {
   const [loading, setLoading] = useState(isEditMode);
 
   const [editorData, setEditorData] = useState([]);
-
-  useEffect(() => {
-    document.documentElement.setAttribute("data-color-mode", theme);
-  }, [theme]);
 
   useEffect(() => {
     if (isEditMode) {
@@ -93,7 +89,7 @@ const GeneralNoteEditor = () => {
         <Button
           onClick={goBack}
           disabled={saving}
-          className="flex items-center text-black/60 text-sm rounded-md border-none hover:text-black dark:text-white/70 dark:hover:text-white"
+          className="flex items-center gap-0.5 text-black/60 text-sm rounded-lg border-none px-2 py-1 transition-colors duration-150 hover:text-black hover:bg-gray-100 dark:text-white/70 dark:hover:text-white dark:hover:bg-white/10"
         >
           <RiArrowLeftSFill className="w-5 h-5 dark:text-white/70 dark:hover:text-white" />
           <span>Back</span>
@@ -107,10 +103,10 @@ const GeneralNoteEditor = () => {
         <Button
           onClick={handleSave}
           disabled={saving}
-          className={`flex items-center text-black px-4 text-xs py-1.5 rounded-md ${
+          className={`flex items-center gap-1.5 text-white px-4 text-xs py-1.5 rounded-lg shadow-sm transition-all duration-150 ${
             saving
               ? "bg-green-400 cursor-not-allowed"
-              : "bg-green-500 hover:bg-green-600"
+              : "bg-green-600 hover:bg-green-700 hover:shadow-md"
           }`}
         >
           <RiSave2Fill className="w-5 h-5" />

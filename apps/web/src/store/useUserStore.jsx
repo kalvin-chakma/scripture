@@ -7,33 +7,6 @@ const useUserStore = create((set) => ({
   error: "",
   userData: null,
 
-  // Theme state
-  theme: localStorage.getItem("theme") || "light",
-  setTheme: (newTheme) => {
-    localStorage.setItem("theme", newTheme);
-    if (newTheme === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-    set({ theme: newTheme });
-  },
-  //thene toggle
-  toggleTheme: () => {
-    set((state) => {
-      const newTheme = state.theme === "dark" ? "light" : "dark";
-      localStorage.setItem("theme", newTheme);
-
-      if (newTheme === "dark") {
-        document.documentElement.classList.add("dark");
-      } else {
-        document.documentElement.classList.remove("dark");
-      }
-
-      return { theme: newTheme };
-    });
-  },
-
   // signin state
   signIn: async ({ username, password }) => {
     try {

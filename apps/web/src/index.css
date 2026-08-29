@@ -2,6 +2,36 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  *,
+  *::before,
+  *::after {
+    transition-property: background-color, border-color, color, fill, stroke,
+      text-decoration-color;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+  .md-editor *,
+  .wmde-markdown *,
+  #blocknote-container * {
+    transition: none;
+  }
+  @supports (view-transition-name: root) {
+    *,
+    *::before,
+    *::after {
+      transition: none;
+    }
+  }
+}
+
+/* Tune the whole-page crossfade used for theme toggles. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 200ms;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 /* Hide scrollbars */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
