@@ -12,7 +12,7 @@ const OAuthSuccess = () => {
     if (token) {
       // Save token to store and localStorage
       localStorage.setItem("token", token);
-      navigate("/home");
+      navigate("/dashboard");
     } else {
       navigate("/login");
     }

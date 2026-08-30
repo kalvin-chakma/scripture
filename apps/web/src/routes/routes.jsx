@@ -1,11 +1,12 @@
-import { Navigate, Route } from "react-router-dom";
-import Home from "../pages/Home";
+import { Route } from "react-router-dom";
+import Dashboard from "../pages/Dashboard";
+import Landing from "../pages/Landing";
 import SignIn from "../pages/signin";
 import SignUp from "../pages/signup";
 import BaseLayout from "../layout/BaseLayout";
 import SimpleLayout from "../layout/SimpleLayout";
 import MarkdownNoteEditor from "../note-editor/MarkdownNoteEditor";
-import GeneralNoteEditor from "../note-editor/GeneralNoteEditor";
+import StructuredNoteEditor from "../note-editor/StructuredNoteEditor";
 import TodoNoteEditor from "../note-editor/TodoNoteEditor";
 import ProtectedRoute from "./protectedRoute";
 import NoteDetails from "../pages/NoteDetails";
@@ -15,13 +16,13 @@ import OAuthSuccess from "../services/OAuthSuccess";
 
 export const routes = (
   <>
+    <Route path="/" element={<Landing />} />
     <Route element={<BaseLayout />}>
-      <Route path="/" element={<Navigate to="/user/signup" replace />} />
       <Route
-        path="/home"
+        path="/dashboard"
         element={
           <ProtectedRoute>
-            <Home />
+            <Dashboard />
           </ProtectedRoute>
         }
       />
@@ -41,10 +42,10 @@ export const routes = (
         }
       />
       <Route
-        path="/general-editor"
+        path="/structured-editor"
         element={
           <ProtectedRoute>
-            <GeneralNoteEditor />
+            <StructuredNoteEditor />
           </ProtectedRoute>
         }
       />

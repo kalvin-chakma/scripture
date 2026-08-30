@@ -23,7 +23,7 @@ const Navbar = () => {
   );
 
   return (
-    <div className="h-[8vh] border-b bg-zinc-100/65 backdrop-blur-sm border-gray-200 flex items-center justify-between px-4 w-full dark:bg-[#1f1f1f]/90 dark:text-gray-200 dark:border-neutral-800">
+    <div className="h-[8vh] border-b bg-zinc-100/65 backdrop-blur-sm border-gray-200 flex items-center justify-between px-6 w-full dark:bg-[#1f1f1f]/90 dark:text-gray-200 dark:border-neutral-800">
       <div className="flex items-center gap-2">
         <img src="/logo.svg" alt="Scripture" className="w-8 h-8 rounded-xl" />
         <h1 className="text-2xl font-bold tracking-tight">SCRIPTURE</h1>

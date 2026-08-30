@@ -36,7 +36,7 @@ export default function Sidebar() {
 
   return (
     <>
-      <div className="w-56 bg-white border-r border-gray-200 dark:bg-[#1f1f1f] dark:text-gray-200 dark:border-gray-800 flex flex-col">
+      <div className="w-[17rem] bg-white border-r border-gray-200 dark:bg-[#1f1f1f] dark:text-gray-200 dark:border-neutral-700 flex flex-col">
         <div className="px-5">
           <button
             className="my-2 flex w-full items-center justify-center p-2 text-xs font-semibold border border-zinc-700 rounded hover:bg-gray-100 dark:hover:bg-zinc-600"

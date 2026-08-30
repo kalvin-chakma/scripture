@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import BlockNoteEditor from "../components/general-editor/BlockNoteEditor";
+import BlockNoteEditor from "../components/structured-editor/BlockNoteEditor";
 import { getNote, saveNote, updateNote } from "../services/api";
 import Button from "../components/ui/Button";
 import { RiArrowLeftSFill, RiSave2Fill } from "react-icons/ri";
 import { useTheme } from "next-themes";
 import HomeLoader from "../components/loaders/homeLoader";
 
-const GeneralNoteEditor = () => {
+const StructuredNoteEditor = () => {
   const { theme } = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
@@ -17,7 +17,7 @@ const GeneralNoteEditor = () => {
   const { title: stateTitle, noteType: stateNoteType } = location.state || {};
 
   const [title, setTitle] = useState(stateTitle || "");
-  const [noteType, setNoteType] = useState(stateNoteType || "general");
+  const [noteType, setNoteType] = useState(stateNoteType || "structured");
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(isEditMode);
 
@@ -46,7 +46,7 @@ const GeneralNoteEditor = () => {
       };
       fetchNote();
     }
-  }, [id]);
+  }, [id, isEditMode]);
 
   const handleChange = (data) => {
     setEditorData(data);
@@ -69,7 +69,7 @@ const GeneralNoteEditor = () => {
         await saveNote(payload);
       }
       alert("Note saved!");
-      navigate("/home");
+      navigate("/dashboard");
     } catch (error) {
       console.error(
         "Failed to save note:",
@@ -96,7 +96,6 @@ const GeneralNoteEditor = () => {
         </Button>
 
         <h1 className="text-2xl font-bold flex items-center">
-          <span className="mr-2">📝</span>
           {isEditMode ? "Edit Note" : "New Note"}
         </h1>
 
@@ -131,4 +130,4 @@ const GeneralNoteEditor = () => {
   );
 };
 
-export default GeneralNoteEditor;
+export default StructuredNoteEditor;

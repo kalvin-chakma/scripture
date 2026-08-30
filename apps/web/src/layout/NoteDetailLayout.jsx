@@ -3,7 +3,7 @@ import Navbar from "../components/Navbar";
 
 const NoteDetailLayout = () => {
   return (
-    <div className="dark:bg-[#1f1f1f] w-screen h-screen flex flex-col">
+    <div className="font-mono dark:bg-[#1f1f1f] w-screen h-screen flex flex-col">
       <header className="h-[8vh] max-w-4xl mx-auto border-b bg-zinc-100/65 border-gray-200 flex items-center justify-between px-4 w-full dark:bg-[#1f1f1f] dark:text-gray-200 dark:border-neutral-900 rounded-xl">
         <Navbar />
       </header>

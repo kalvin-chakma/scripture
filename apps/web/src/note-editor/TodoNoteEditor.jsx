@@ -53,7 +53,7 @@ const TodoNoteEditor = () => {
 
       fetchNote();
     }
-  }, [id]);
+  }, [id, isEditMode]);
 
   const updateItem = (itemId, changes) => {
     setItems((prev) =>
@@ -85,7 +85,7 @@ const TodoNoteEditor = () => {
       }
 
       alert("Note saved!");
-      navigate("/home");
+      navigate("/dashboard");
     } catch (error) {
       console.error(
         "Error saving note:",
@@ -112,7 +112,7 @@ const TodoNoteEditor = () => {
         </Button>
 
         <h1 className="text-2xl font-bold flex items-center">
-          <span className="mr-2">✅</span> To-do Note Editor
+           To-do Note Editor
         </h1>
 
         <Button
@@ -134,7 +134,7 @@ const TodoNoteEditor = () => {
           <HomeLoader />
         </div>
       ) : (
-        <div className="bg-white dark:bg-[#1f1f1f] rounded-lg shadow-md p-4 space-y-4">
+        <div className="bg-white dark:bg-[#1f1f1f] p-4 space-y-4">
           <input
             type="text"
             className="w-full text-lg font-semibold bg-transparent border-b border-gray-300 dark:border-gray-600 focus:outline-none py-1 dark:text-white"

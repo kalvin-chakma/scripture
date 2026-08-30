@@ -1,5 +1,16 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+  HiOutlineDocumentText,
+  HiOutlineRectangleGroup,
+  HiOutlineListBullet,
+} from "react-icons/hi2";
+
+const noteTypes = [
+  { value: "markdown", label: "Markdown", icon: HiOutlineDocumentText },
+  { value: "structured", label: "Structured", icon: HiOutlineRectangleGroup },
+  { value: "todo", label: "To-do", icon: HiOutlineListBullet },
+];
 
 export default function NoteForm({ onClose }) {
   const [noteType, setNoteType] = useState("markdown");
@@ -12,7 +23,7 @@ export default function NoteForm({ onClose }) {
 
     const editorRoutes = {
       markdown: "/markdown-editor",
-      general: "/general-editor",
+      structured: "/structured-editor",
       todo: "/todo-editor",
     };
 
@@ -23,27 +34,41 @@ export default function NoteForm({ onClose }) {
   return (
     <form onSubmit={handleSubmit}>
       {/* Note Type */}
-      <div className="mb-4">
-        <label className="block text-sm font-medium mb-1 dark:text-white ">
+      <div className="mb-5">
+        <label className="block text-sm font-medium mb-2 dark:text-white">
           Note Type
         </label>
-        <select
-          className="w-full border text-sm border-gray-300 rounded-lg px-3 py-2 transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-green-500/50 focus:border-green-500 dark:bg-[#1f1f1f] dark:text-gray-200 dark:border-gray-700"
-          value={noteType}
-          onChange={(e) => setNoteType(e.target.value)}
-        >
-          <option value="markdown">Markdown</option>
-          <option value="general">General</option>
-          <option value="todo">To-do</option>
-        </select>
+        <div className="grid grid-cols-3 gap-2">
+          {noteTypes.map((type) => {
+            const Icon = type.icon;
+            return (
+              <button
+                key={type.value}
+                type="button"
+                onClick={() => setNoteType(type.value)}
+                className={`flex flex-col items-center gap-1.5 rounded-lg border px-2 py-3 text-xs font-medium transition-colors duration-150 cursor-pointer ${
+                  noteType === type.value
+                    ? "border-black bg-gray-100 text-black dark:border-white dark:bg-white/10 dark:text-white"
+                    : "border-gray-200 text-gray-500 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-white/5"
+                }`}
+              >
+                <Icon className="w-5 h-5" />
+                {type.label}
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       {/* Title */}
-      <div className="mb-4">
-        <label className="block text-sm font-medium mb-1">Title</label>
+      <div className="mb-5">
+        <label className="block text-sm font-medium mb-2 dark:text-white">
+          Title
+        </label>
         <input
           type="text"
-          className="w-full border text-sm border-gray-300 rounded-lg px-3 py-2 transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-green-500/50 focus:border-green-500 dark:bg-[#1f1f1f] dark:text-gray-200 dark:border-gray-700"
+          autoFocus
+          className="w-full border text-sm border-gray-300 rounded-lg px-3 py-2 transition-colors duration-150 focus:outline-none focus:border-black dark:bg-[#1f1f1f] dark:text-gray-200 dark:border-gray-700 dark:focus:border-white"
           placeholder="Enter note title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
@@ -61,7 +86,7 @@ export default function NoteForm({ onClose }) {
         </button>
         <button
           type="submit"
-          className="flex items-center justify-center bg-green-600 text-sm font-semibold text-white px-4 py-2 rounded-lg shadow-sm transition-all duration-150 hover:bg-green-700 hover:shadow-md cursor-pointer h-[4vh] w-full sm:w-24"
+          className="flex items-center justify-center bg-black text-sm font-semibold text-white px-4 py-2 rounded-lg shadow-sm transition-all duration-150 hover:bg-gray-800 hover:shadow-md cursor-pointer h-[4vh] w-full sm:w-24 dark:bg-white dark:text-black dark:hover:bg-gray-200"
         >
           Save
         </button>

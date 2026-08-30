@@ -3,7 +3,7 @@ import Navbar from "../components/Navbar";
 
 export default function BaseLayout() {
   return (
-    <div className="flex flex-col text-black overflow-x-hidden w-full h-screen no-scrollbar">
+    <div className="font-mono flex flex-col text-black overflow-x-hidden w-full h-screen no-scrollbar">
       <header>
         <Navbar />
       </header>

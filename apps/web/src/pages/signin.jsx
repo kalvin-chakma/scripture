@@ -19,11 +19,11 @@ const SignIn = () => {
     try {
       const result = await signIn(form);
       if (result.success) {
-        navigate("/home");
+        navigate("/dashboard");
       } else {
         alert(result.message);
       }
-    } catch (error) {
+    } catch {
       alert("An error occurred during sign in");
     } finally {
       setIsLoading(false);

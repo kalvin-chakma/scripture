@@ -1,26 +1,25 @@
 import React from "react";
-import { useLocation, useParams, Navigate } from "react-router-dom";
+import { useLocation, Navigate } from "react-router-dom";
 import MarkdownNoteEditor from "../note-editor/MarkdownNoteEditor";
-import GeneralNoteEditor from "../note-editor/GeneralNoteEditor";
+import StructuredNoteEditor from "../note-editor/StructuredNoteEditor";
 import TodoNoteEditor from "../note-editor/TodoNoteEditor";
 
-const updateRouteHandler = () => {
+const editorMap = {
+  markdown: MarkdownNoteEditor,
+  structured: StructuredNoteEditor,
+  todo: TodoNoteEditor,
+};
+
+const UpdateRouteHandler = () => {
   const location = useLocation();
   const { noteType } = location.state || {};
-  const { id, title } = useParams();
 
-  if (!noteType) return <Navigate to="/home" />;
-
-  const editorMap = {
-    markdown: MarkdownNoteEditor,
-    general: GeneralNoteEditor,
-    todo: TodoNoteEditor,
-  };
+  if (!noteType) return <Navigate to="/dashboard" />;
 
   const EditorComponent =
-    editorMap[noteType.toLowerCase()] || GeneralNoteEditor;
+    editorMap[noteType.toLowerCase()] || StructuredNoteEditor;
 
   return <EditorComponent />;
 };
 
-export default updateRouteHandler;
+export default UpdateRouteHandler;

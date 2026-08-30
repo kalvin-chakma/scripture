@@ -100,7 +100,7 @@ const MarkdownNoteEditor = () => {
 
       fetchNote();
     }
-  }, [id]);
+  }, [id, isEditMode]);
 
   const saveNoteHandler = async () => {
     try {
@@ -117,7 +117,7 @@ const MarkdownNoteEditor = () => {
       }
 
       alert("Note saved!");
-      navigate("/home");
+      navigate("/dashboard");
     } catch (error) {
       console.error(
         "Error saving note:",
@@ -164,7 +164,7 @@ const MarkdownNoteEditor = () => {
         </Button>
 
         <h1 className="text-2xl font-bold flex items-center">
-          <span className="mr-2">📝</span> Markdown Note Editor
+            Markdown Note Editor Kalvin
         </h1>
         <Button
           onClick={saveNoteHandler}

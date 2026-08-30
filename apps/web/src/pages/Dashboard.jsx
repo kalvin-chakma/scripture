@@ -5,10 +5,20 @@ import { deleteNote, getNote } from "../services/api";
 import HomeLoader from "../components/loaders/homeLoader";
 import { SiPinboard } from "react-icons/si";
 import { RiDeleteBin5Fill } from "react-icons/ri";
-import { HiOutlineDocumentText } from "react-icons/hi2";
+import {
+  HiOutlineDocumentText,
+  HiOutlineRectangleGroup,
+  HiOutlineListBullet,
+} from "react-icons/hi2";
 
-export default function Home() {
-  document.title = "Scripture | Home";
+const noteTypeIcons = {
+  markdown: HiOutlineDocumentText,
+  structured: HiOutlineRectangleGroup,
+  todo: HiOutlineListBullet,
+};
+
+export default function Dashboard() {
+  document.title = "Scripture | Dashboard";
   const navigate = useNavigate();
   const [columns, setColumns] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -77,7 +87,7 @@ export default function Home() {
   }, [noteTypeOrder, navigate]);
 
   return (
-    <div className="flex h-full text-gray-800 font-sans no-scrollbar">
+    <div className="flex h-full text-gray-800 no-scrollbar">
       <Sidebar className="bg-black" />
 
       <div className="flex flex-col flex-1 px-5 mt-2">
@@ -93,10 +103,13 @@ export default function Home() {
               <p className="text-xs mt-1">Create your first note to get started</p>
             </div>
           ) : (
-            columns.map((col) => (
+            columns.map((col) => {
+              const TypeIcon =
+                noteTypeIcons[col.noteType?.toLowerCase()] || SiPinboard;
+              return (
               <div
                 key={col.id}
-                className="w-72 px-3 flex-shrink-0 flex flex-col bg-gray-50 rounded-lg shadow-sm border border-gray-200 dark:bg-neutral-800 dark:border-neutral-800 dark:text-gray-300"
+                className="flex-1 min-w-0 px-3 flex flex-col  dark:text-gray-300"
               >
                 <div className="p-2 border-b border-gray-200 dark:border-neutral-800 flex items-center justify-center gap-2">
                   <h3 className="uppercase font-bold text-xs text-center">
@@ -106,19 +119,19 @@ export default function Home() {
                     {col.notes.length}
                   </span>
                 </div>
-                <div className="flex flex-col gap-2 p-2 overflow-y-auto no-scrollbar pb-16">
+                <div className="flex flex-col gap-2 py-2 overflow-y-auto no-scrollbar pb-16">
                   {col.notes.map((note) => (
                     <div key={note.id}>
                       <div key={note.id} className="group">
-                        <div className="flex flex-row bg-white border border-gray-200 rounded-lg shadow-sm text-sm cursor-pointer items-center justify-between text-center transition-all duration-150 hover:shadow-md hover:-translate-y-0.5 dark:bg-neutral-800 dark:border-gray-600 dark:hover:bg-neutral-700 dark:hover:shadow-lg">
+                        <div className="flex flex-row bg-white border border-gray-200 rounded-md shadow-sm text-md cursor-pointer items-center justify-between text-center transition-all duration-150 hover:shadow-md hover:-translate-y-0.5 dark:bg-neutral-800/80 dark:border-gray-600 dark:hover:bg-neutral-800 dark:hover:shadow-lg px-3 py-2">
                           <Link
                             to={`/note-details/${note.id}/${encodeURIComponent(
                               note.title
                             )}`}
-                            className="w-[100%] overflow-hidden p-2"
+                            className="w-[100%] overflow-hidden"
                           >
                             <div className="flex items-center space-x-2">
-                              <SiPinboard className="w-3 h-3 flex-shrink-0" />
+                              <TypeIcon className="w-3.5 h-3.5 flex-shrink-0" />
                               <span className="truncate">{note.title}</span>
                             </div>
                           </Link>
@@ -147,7 +160,7 @@ export default function Home() {
                                 console.error("Failed to delete note:", err);
                               }
                             }}
-                            className="ml-1 h-5 w-5 flex-shrink-0 flex items-center justify-center rounded-full p-0.5 text-gray-500 transition-opacity duration-200 hover:bg-red-100 hover:text-red-600 opacity-0 group-hover:opacity-100 dark:text-gray-400 dark:hover:bg-red-500/10 dark:hover:text-red-400"
+                            className="flex-shrink-0 flex items-center justify-center text-gray-500 transition-opacity duration-200 hover:text-red-600 opacity-0 group-hover:opacity-100 dark:text-gray-400 dark:hover:bg-red-500/10 dark:hover:text-red-400"
                           >
                             <RiDeleteBin5Fill className="h-3.5 w-3.5" />
                           </button>
@@ -157,7 +170,8 @@ export default function Home() {
                   ))}
                 </div>
               </div>
-            ))
+              );
+            })
           )}
         </div>
       </div>
