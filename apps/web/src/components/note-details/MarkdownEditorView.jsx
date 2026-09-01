@@ -3,6 +3,7 @@ import MarkdownEditor from "@uiw/react-markdown-editor";
 import {
   markdownRemarkPlugins,
   markdownRemarkRehypeOptions,
+  markdownRehypePlugins,
 } from "../../note-editor/markdownPlugins";
 import StatusIndicator from "./StatusIndicator";
 
@@ -62,6 +63,7 @@ export default function MarkdownEditorView({
           previewProps={{
             remarkPlugins: markdownRemarkPlugins,
             remarkRehypeOptions: markdownRemarkRehypeOptions,
+            rehypePlugins: markdownRehypePlugins,
           }}
         />
         {splitContainerEl &&

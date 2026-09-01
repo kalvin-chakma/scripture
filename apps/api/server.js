@@ -1,10 +1,12 @@
 const express = require("express");
+const http = require("http");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const passport = require("passport");
 const prisma = require("@scripture/db");
 const userRouter = require("./routes/user");
 const noteRouter = require("./routes/notes");
+const attachWebSocket = require("./ws");
 
 dotenv.config();
 
@@ -26,12 +28,15 @@ app.use(passport.initialize());
 app.use("/user", userRouter);
 app.use("/note", noteRouter);
 
+const server = http.createServer(app);
+attachWebSocket(server);
+
 prisma
   .$connect()
   .then(() => {
     console.log(" Database connected");
     const PORT = process.env.PORT || 3000;
-    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+    server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
   })
   .catch((error) => {
     console.error(" Database connection failed:", error);

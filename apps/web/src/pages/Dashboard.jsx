@@ -109,7 +109,7 @@ export default function Dashboard() {
               return (
               <div
                 key={col.id}
-                className="flex-1 min-w-0 px-3 flex flex-col  dark:text-gray-300"
+                className="w-80 flex-shrink-0 px-3 flex flex-col dark:text-gray-300"
               >
                 <div className="p-2 border-b border-gray-200 dark:border-neutral-800 flex items-center justify-center gap-2">
                   <h3 className="uppercase font-bold text-xs text-center">

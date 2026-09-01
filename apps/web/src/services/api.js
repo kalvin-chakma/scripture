@@ -1,6 +1,7 @@
 import axios from "axios";
 
 export const API = import.meta.env.VITE_API_URL || "http://localhost:3000";
+export const WS_URL = API.replace(/^http/, "ws");
 
 const apiClient = axios.create({
   baseURL: API,
@@ -30,3 +31,13 @@ export const updateNote = (id, data) =>
 
 //User APIS
 export const getUsetdata = () => apiClient.get("/user/userdata");
+export const updateProfile = (data) => apiClient.put("/user/profile", data);
+export const changePassword = (data) => apiClient.put("/user/password", data);
+
+// Collaboration APIs
+export const getCollaborators = (noteId) =>
+  apiClient.get(`/note/${noteId}/collaborators`);
+export const addCollaborator = (noteId, email) =>
+  apiClient.post(`/note/${noteId}/collaborators`, { email });
+export const removeCollaborator = (noteId, userId) =>
+  apiClient.delete(`/note/${noteId}/collaborators/${userId}`);

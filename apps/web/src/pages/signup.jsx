@@ -7,7 +7,7 @@ import Button from "../components/ui/Button";
 
 const SignUp = () => {
   document.title = "Scripture | Sign Up";
-  const [form, setForm] = useState({ username: "", password: "" });
+  const [form, setForm] = useState({ name: "", username: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
   const [agreeToTerms, setAgreeToTerms] = useState(false);
   const { signUp } = useUserStore();
@@ -79,6 +79,19 @@ const SignUp = () => {
           onSubmit={handleSubmit}
           className="space-y-6 w-[35vh] mx-auto lg:w-full"
         >
+          <div>
+            <label className="block text-white text-sm mb-2">Name</label>
+            <input
+              type="text"
+              className="w-full bg-gray-800 border border-gray-600 rounded-lg py-2 px-4 text-white placeholder-gray-400 focus:border-gray-400 focus:outline-none"
+              placeholder="Name"
+              autoComplete="name"
+              value={form.name}
+              onChange={(e) => setForm({ ...form, name: e.target.value })}
+              required
+            />
+          </div>
+
           <div>
             <label className="block text-white text-sm mb-2">Email</label>
             <input

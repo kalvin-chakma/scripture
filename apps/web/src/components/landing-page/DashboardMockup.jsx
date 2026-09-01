@@ -6,9 +6,9 @@ import {
 
 const dashboardColumns = [
   {
-    label: "To-Do",
-    icon: HiOutlineListBullet,
-    rows: ["Ship the beta", "Backup the database", "Reply to feedback"],
+    label: "Markdown",
+    icon: HiOutlineDocumentText,
+    rows: ["Meeting notes", "Reading list", "API cheat sheet"],
   },
   {
     label: "Structured",
@@ -16,9 +16,9 @@ const dashboardColumns = [
     rows: ["Project roadmap", "Onboarding checklist"],
   },
   {
-    label: "Markdown",
-    icon: HiOutlineDocumentText,
-    rows: ["Meeting notes", "Reading list", "API cheat sheet"],
+    label: "To-Do",
+    icon: HiOutlineListBullet,
+    rows: ["Ship the beta", "Backup the database", "Reply to feedback"],
   },
 ];
 

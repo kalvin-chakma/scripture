@@ -1,5 +1,6 @@
 import { Route } from "react-router-dom";
 import Dashboard from "../pages/Dashboard";
+import Settings from "../pages/Settings";
 import Landing from "../pages/Landing";
 import SignIn from "../pages/signin";
 import SignUp from "../pages/signup";
@@ -23,6 +24,14 @@ export const routes = (
         element={
           <ProtectedRoute>
             <Dashboard />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/settings"
+        element={
+          <ProtectedRoute>
+            <Settings />
           </ProtectedRoute>
         }
       />

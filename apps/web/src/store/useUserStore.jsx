@@ -26,9 +26,9 @@ const useUserStore = create((set) => ({
     }
   },
   //signup state
-  signUp: async ({ username, password }) => {
+  signUp: async ({ name, username, password }) => {
     try {
-      const res = await signup({ username, password });
+      const res = await signup({ name, username, password });
       set({ error: "" });
       return { success: true, message: res.data.message || "User registered" };
     } catch (err) {

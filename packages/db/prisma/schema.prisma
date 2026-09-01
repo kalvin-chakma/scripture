@@ -9,27 +9,42 @@ datasource db {
 }
 
 model User {
-  id          String   @id @default(uuid())
-  username    String   @unique
-  password    String?
-  googleId    String?  @unique
-  displayName String?
-  avatar      String?
-  notes       Note[]
+  id             String             @id @default(uuid())
+  username       String             @unique
+  password       String?
+  googleId       String?            @unique
+  displayName    String?
+  avatar         String?
+  notes          Note[]
+  collaborations NoteCollaborator[]
 
   @@map("users")
 }
 
 model Note {
-  id        String   @id @default(uuid())
-  userId    String   @map("user_id")
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  title     String?
-  noteType  String?  @map("note_type")
-  content   String?
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  id            String             @id @default(uuid())
+  userId        String             @map("user_id")
+  user          User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title         String?
+  noteType      String?            @map("note_type")
+  content       String?
+  createdAt     DateTime           @default(now()) @map("created_at")
+  updatedAt     DateTime           @updatedAt @map("updated_at")
+  collaborators NoteCollaborator[]
 
   @@index([userId])
   @@map("notes")
+}
+
+model NoteCollaborator {
+  id        String   @id @default(uuid())
+  noteId    String   @map("note_id")
+  note      Note     @relation(fields: [noteId], references: [id], onDelete: Cascade)
+  userId    String   @map("user_id")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@unique([noteId, userId])
+  @@index([userId])
+  @@map("note_collaborators")
 }

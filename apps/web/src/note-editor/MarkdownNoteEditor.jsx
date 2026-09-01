@@ -9,6 +9,7 @@ import Button from "../components/ui/Button";
 import {
   markdownRemarkPlugins,
   markdownRemarkRehypeOptions,
+  markdownRehypePlugins,
 } from "./markdownPlugins";
 import "./md.css";
 
@@ -145,6 +146,7 @@ const MarkdownNoteEditor = () => {
         previewProps={{
           remarkPlugins: markdownRemarkPlugins,
           remarkRehypeOptions: markdownRemarkRehypeOptions,
+          rehypePlugins: markdownRehypePlugins,
         }}
       />
     ),

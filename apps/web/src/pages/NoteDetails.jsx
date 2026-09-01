@@ -6,22 +6,28 @@ import BlockNoteEditor from "../components/structured-editor/BlockNoteEditor";
 import Loader from "../components/loaders/Loader";
 import { useTheme } from "next-themes";
 import useNoteViewStore from "../store/useNoteViewStore";
+import useUserStore from "../store/useUserStore";
 import {
   markdownRemarkPlugins,
   markdownRemarkRehypeOptions,
+  markdownRehypePlugins,
 } from "../note-editor/markdownPlugins";
 import "../note-editor/md.css";
 import useResizableDivider from "../components/note-details/useResizableDivider";
+import useNoteCollaboration from "../note-editor/useNoteCollaboration";
 import MarkdownEditorView from "../components/note-details/MarkdownEditorView";
 import StatusIndicator from "../components/note-details/StatusIndicator";
 import TodoList from "../components/note-details/TodoList";
+import ShareModal from "../components/note-details/ShareModal";
 import { emptyTodoItem, makeTodoId } from "../components/note-details/todoUtils";
+import { HiOutlineUserPlus } from "react-icons/hi2";
 
 export default function NoteDetails() {
   document.title = "Scripture | Note";
   const { theme } = useTheme();
   const { id } = useParams();
   const { isEditing, setIsEditing } = useNoteViewStore();
+  const { userData, fetchUsetdata } = useUserStore();
 
   const [note, setNote] = useState(null);
   const [title, setTitle] = useState("");
@@ -29,6 +35,7 @@ export default function NoteDetails() {
   const [items, setItems] = useState([]);
   const [editorData, setEditorData] = useState([]);
   const [saveStatus, setSaveStatus] = useState("idle"); // idle | saving | saved | error
+  const [showShareModal, setShowShareModal] = useState(false);
 
   // Holds the latest title/content so the debounced save always writes the
   // most recent edit, without re-creating the debounce on every keystroke.
@@ -51,6 +58,10 @@ export default function NoteDetails() {
   useEffect(() => {
     setIsEditing(false);
   }, [id, setIsEditing]);
+
+  useEffect(() => {
+    fetchUsetdata();
+  }, [fetchUsetdata]);
 
   useEffect(() => {
     const fetchNote = async () => {
@@ -115,34 +126,82 @@ export default function NoteDetails() {
     [id, note]
   );
 
+  // Applies an edit that arrived over the WebSocket from another collaborator.
+  // Only updates local view state - the collaborator who made the edit is
+  // responsible for persisting it via their own debounced save.
+  const handleRemoteUpdate = useCallback(
+    (msg) => {
+      if (!note) return;
+
+      if (msg.title !== undefined) {
+        setTitle(msg.title);
+        draftRef.current = { ...draftRef.current, title: msg.title };
+      }
+
+      if (msg.content !== undefined) {
+        draftRef.current = { ...draftRef.current, content: msg.content };
+
+        if (note.noteType === "markdown") {
+          setMarkdown(msg.content);
+        } else if (note.noteType === "todo") {
+          try {
+            const parsed = JSON.parse(msg.content || "[]");
+            setItems(
+              Array.isArray(parsed) && parsed.length
+                ? parsed.map((item) => ({ ...item, id: item.id || makeTodoId() }))
+                : [emptyTodoItem()]
+            );
+          } catch (error) {
+            console.error("Failed to apply remote todo update:", error);
+          }
+        } else {
+          try {
+            setEditorData(JSON.parse(msg.content || "[]"));
+          } catch (error) {
+            console.error("Failed to apply remote editor update:", error);
+          }
+        }
+      }
+    },
+    [note]
+  );
+
+  const broadcast = useNoteCollaboration(id, handleRemoteUpdate);
+
   const handleTitleChange = (e) => {
     const value = e.target.value;
     setTitle(value);
     persist({ title: value });
+    broadcast({ title: value });
   };
 
   const handleMarkdownChange = useCallback(
     (value) => {
       setMarkdown(value);
       persist({ content: value });
+      broadcast({ content: value });
     },
-    [persist]
+    [persist, broadcast]
   );
 
   const handleEditorChange = useCallback(
     (data) => {
       setEditorData(data);
-      persist({ content: JSON.stringify(data) });
+      const content = JSON.stringify(data);
+      persist({ content });
+      broadcast({ content });
     },
-    [persist]
+    [persist, broadcast]
   );
 
   const persistItems = useCallback(
     (nextItems) => {
       const cleaned = nextItems.filter((item) => item.text.trim() !== "");
-      persist({ content: JSON.stringify(cleaned.length ? cleaned : nextItems) });
+      const content = JSON.stringify(cleaned.length ? cleaned : nextItems);
+      persist({ content });
+      broadcast({ content });
     },
-    [persist]
+    [persist, broadcast]
   );
 
   const updateItem = (itemId, changes) => {
@@ -183,6 +242,7 @@ export default function NoteDetails() {
         className="prose dark:prose-invert max-w-none"
         remarkPlugins={markdownRemarkPlugins}
         remarkRehypeOptions={markdownRemarkRehypeOptions}
+        rehypePlugins={markdownRehypePlugins}
       />
     ),
     [markdown]
@@ -246,8 +306,22 @@ export default function NoteDetails() {
             })}
           </span>
           <StatusIndicator status={saveStatus} />
+          {userData?.id === note.userId && (
+            <button
+              type="button"
+              onClick={() => setShowShareModal(true)}
+              className="flex items-center gap-1 rounded-md px-2 py-1 text-gray-500 hover:bg-gray-100 hover:text-gray-800 dark:text-gray-400 dark:hover:bg-white/10 dark:hover:text-white transition-colors duration-150"
+            >
+              <HiOutlineUserPlus className="w-3.5 h-3.5" />
+              Share
+            </button>
+          )}
         </div>
       </div>
+
+      {showShareModal && (
+        <ShareModal noteId={id} onClose={() => setShowShareModal(false)} />
+      )}
 
       <div className="w-full overflow-auto">
         {note.noteType === "markdown" ? (
