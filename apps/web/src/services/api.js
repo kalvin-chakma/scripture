@@ -21,6 +21,8 @@ export const login = (credentials) =>
   apiClient.post("/user/signin", credentials);
 export const signup = (credentials) =>
   apiClient.post("/user/signup", credentials);
+export const googleSignInWithCode = (code) =>
+  apiClient.post("/user/auth/google", { code });
 
 // Notes APIs
 export const saveNote = (data) => apiClient.post("/note/save", data);

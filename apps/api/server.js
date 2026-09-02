@@ -2,7 +2,6 @@ const express = require("express");
 const http = require("http");
 const cors = require("cors");
 const dotenv = require("dotenv");
-const passport = require("passport");
 const prisma = require("@scripture/db");
 const userRouter = require("./routes/user");
 const noteRouter = require("./routes/notes");
@@ -21,9 +20,6 @@ app.use(
   })
 );
 app.use(express.json());
-
-require("./middleware/OAuth");
-app.use(passport.initialize());
 
 app.use("/user", userRouter);
 app.use("/note", noteRouter);

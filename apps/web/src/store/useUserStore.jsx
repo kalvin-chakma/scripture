@@ -1,5 +1,10 @@
 import { create } from "zustand";
-import { login, signup, API, getUsetdata } from "../services/api";
+import {
+  login,
+  signup,
+  getUsetdata,
+  googleSignInWithCode,
+} from "../services/api";
 
 const useUserStore = create((set) => ({
   user: JSON.parse(localStorage.getItem("user")) || null,
@@ -38,8 +43,42 @@ const useUserStore = create((set) => ({
     }
   },
 
-  googleSignIn: async () => {
-    window.location.href = `${API}/user/auth/google`;
+  googleSignIn: () => {
+    const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+    if (!clientId) {
+      set({ error: "Google sign-in is not configured." });
+      return;
+    }
+
+    const state = crypto.randomUUID();
+    sessionStorage.setItem("google_oauth_state", state);
+
+    const params = new URLSearchParams({
+      client_id: clientId,
+      redirect_uri: `${window.location.origin}/auth/google/callback`,
+      response_type: "code",
+      scope: "openid email profile",
+      access_type: "online",
+      prompt: "select_account",
+      state,
+    });
+
+    window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`;
+  },
+
+  googleSignInCallback: async (code) => {
+    try {
+      const res = await googleSignInWithCode(code);
+      const token = res.data.token;
+
+      localStorage.setItem("token", token);
+      set({ token, error: "" });
+      return { success: true };
+    } catch (err) {
+      const message = err.response?.data?.message || "Google sign-in failed";
+      set({ error: message });
+      return { success: false, message };
+    }
   },
 
   //signout state

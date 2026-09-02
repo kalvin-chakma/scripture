@@ -1,11 +1,17 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const { OAuth2Client } = require("google-auth-library");
 const prisma = require("@scripture/db");
 const { SECRET, authenticateJWT } = require("../middleware/auth");
-const passport = require("passport");
 
 const router = express.Router();
+
+const googleClient = new OAuth2Client(
+  process.env.GOOGLE_CLIENT_ID,
+  process.env.GOOGLE_CLIENT_SECRET,
+  process.env.GOOGLE_REDIRECT_URI
+);
 
 // User signup
 router.post("/signup", async (req, res) => {
@@ -62,28 +68,66 @@ router.post("/signin", async (req, res) => {
   }
 });
 
-//Google OAuth routes
-router.get(
-  "/auth/google",
-  passport.authenticate("google", { scope: ["profile", "email"] })
-);
+// Google OAuth - exchanges an authorization code (obtained by the frontend)
+// for tokens server-to-server, so no redirect ever hits this backend
+// directly and there is no dependency on how a proxy reports req.protocol.
+router.post("/auth/google", async (req, res) => {
+  const { code } = req.body;
+  if (!code) {
+    return res.status(400).json({ message: "Missing authorization code" });
+  }
 
-router.get(
-  "/auth/google/callback",
-  passport.authenticate("google", {
-    failureRedirect: "/signin",
-    session: false,
-  }),
-  (req, res) => {
+  try {
+    const { tokens } = await googleClient.getToken(code);
+    if (!tokens.id_token) {
+      return res.status(401).json({ message: "Google sign-in failed" });
+    }
+
+    const ticket = await googleClient.verifyIdToken({
+      idToken: tokens.id_token,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+    const payload = ticket.getPayload();
+    if (!payload?.email) {
+      return res.status(400).json({ message: "Google account has no email" });
+    }
+
+    let user = await prisma.user.findUnique({
+      where: { googleId: payload.sub },
+    });
+    if (!user) {
+      user = await prisma.user.findUnique({
+        where: { username: payload.email },
+      });
+    }
+    if (!user) {
+      user = await prisma.user.create({
+        data: {
+          googleId: payload.sub,
+          username: payload.email,
+          displayName: payload.name || payload.email.split("@")[0],
+          avatar: payload.picture,
+        },
+      });
+    } else if (!user.googleId) {
+      user = await prisma.user.update({
+        where: { id: user.id },
+        data: { googleId: payload.sub },
+      });
+    }
+
     const token = jwt.sign(
-      { userID: req.user.id, username: req.user.username },
+      { userID: user.id, username: user.username },
       SECRET,
       { expiresIn: "1h" }
     );
 
-    res.redirect(`${process.env.FRONTEND_URL}/oauth-success?token=${token}`);
+    res.json({ token });
+  } catch (error) {
+    console.error("Google sign-in failed:", error.message);
+    res.status(401).json({ message: "Google sign-in failed" });
   }
-);
+});
 
 //Get User Profile
 router.get("/userdata", async (req, res) => {
