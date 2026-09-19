@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import useUserStore from "../store/useUserStore";
+import Button from "../components/ui/button";
 
 const GoogleCallback = () => {
   document.title = "Scripture | Signing in with Google";
@@ -47,13 +48,13 @@ const GoogleCallback = () => {
         {error ? (
           <>
             <p className="text-sm text-red-400">{error}</p>
-            <button
-              type="button"
+            <Button
+              variant="unstyled"
               onClick={() => navigate("/user/signin")}
               className="mt-4 text-sm text-white underline hover:no-underline"
             >
               Back to sign in
-            </button>
+            </Button>
           </>
         ) : (
           <p className="text-sm text-gray-400">Signing you in with Google...</p>

@@ -229,4 +229,37 @@ router.put("/password", authenticateJWT, async (req, res) => {
   }
 });
 
+// Delete account - requires password confirmation when one is set
+router.delete("/account", authenticateJWT, async (req, res) => {
+  const { password } = req.body;
+
+  try {
+    const user = await prisma.user.findUnique({ where: { id: req.user_id } });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (user.password) {
+      if (!password) {
+        return res
+          .status(400)
+          .json({ message: "Password is required to delete your account" });
+      }
+
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (!isMatch) {
+        return res.status(401).json({ message: "Incorrect password" });
+      }
+    }
+
+    await prisma.user.delete({ where: { id: req.user_id } });
+
+    res.status(200).json({ message: "Account deleted successfully" });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Failed to delete account", error: error.message });
+  }
+});
+
 module.exports = router;

@@ -4,6 +4,7 @@ import {
   signup,
   getUsetdata,
   googleSignInWithCode,
+  deleteAccount,
 } from "../services/api";
 
 const useUserStore = create((set) => ({
@@ -101,6 +102,21 @@ const useUserStore = create((set) => ({
       };
     } catch (error) {
       return { success: false, message: error.message };
+    }
+  },
+
+  //delete account
+  deleteAccount: async (password) => {
+    try {
+      await deleteAccount({ password });
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
+      localStorage.removeItem("noteTypeOrder");
+      set({ user: null, token: null, userData: null, error: "" });
+      return { success: true };
+    } catch (err) {
+      const message = err.response?.data?.message || "Failed to delete account";
+      return { success: false, message };
     }
   },
 

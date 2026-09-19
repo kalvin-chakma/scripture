@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import useUserStore from "../store/useUserStore";
 import { FcGoogle } from "react-icons/fc";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import Button from "../components/ui/Button";
+import Button from "../components/ui/button";
 
 const SignIn = () => {
   document.title = "Scripture | Sign In";
@@ -80,13 +80,13 @@ const SignIn = () => {
                   }
                   required
                 />
-                <button
-                  type="button"
+                <Button
+                  variant="unstyled"
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white"
                 >
                   {showPassword ? <FaEyeSlash /> : <FaEye />}
-                </button>
+                </Button>
               </div>
             </div>
 

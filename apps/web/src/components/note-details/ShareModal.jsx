@@ -90,7 +90,7 @@ export default function ShareModal({ noteId, onClose }) {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="px-3 py-2 text-sm font-semibold rounded-lg bg-gray-800 text-white hover:bg-gray-700 disabled:opacity-50 dark:bg-white dark:text-black dark:hover:bg-gray-200"
+            className="px-3 py-1.5 text-sm font-semibold rounded-md bg-gray-800 text-white hover:bg-gray-700 disabled:opacity-50 dark:bg-white dark:text-black dark:hover:bg-gray-200"
           >
             Add
           </button>

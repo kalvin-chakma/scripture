@@ -35,6 +35,7 @@ export const updateNote = (id, data) =>
 export const getUsetdata = () => apiClient.get("/user/userdata");
 export const updateProfile = (data) => apiClient.put("/user/profile", data);
 export const changePassword = (data) => apiClient.put("/user/password", data);
+export const deleteAccount = (data) => apiClient.delete("/user/account", { data });
 
 // Collaboration APIs
 export const getCollaborators = (noteId) =>

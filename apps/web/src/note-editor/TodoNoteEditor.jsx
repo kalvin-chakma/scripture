@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { getNote, saveNote, updateNote } from "../services/api";
-import Button from "../components/ui/Button";
+import Button from "../components/ui/button";
 import { RiArrowLeftSFill, RiSave2Fill } from "react-icons/ri";
 import { IoAddOutline, IoTrashOutline } from "react-icons/io5";
 import HomeLoader from "../components/loaders/homeLoader";
@@ -161,25 +161,25 @@ const TodoNoteEditor = () => {
                     item.done ? "line-through text-gray-400 dark:text-gray-500" : ""
                   }`}
                 />
-                <button
-                  type="button"
+                <Button
+                  variant="unstyled"
                   onClick={() => removeItem(item.id)}
                   className="text-gray-400 hover:text-red-500"
                 >
                   <IoTrashOutline className="w-4 h-4" />
-                </button>
+                </Button>
               </div>
             ))}
           </div>
 
-          <button
-            type="button"
+          <Button
+            variant="unstyled"
             onClick={addItem}
             className="flex items-center text-sm text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white"
           >
             <IoAddOutline className="w-4 h-4 mr-1" />
             Add item
-          </button>
+          </Button>
         </div>
       )}
     </div>

@@ -42,6 +42,7 @@ const BlockNoteEditor = ({ data, onChange, editorBlock, theme, editable = true }
     },
     initialContent: Array.isArray(data) && data.length > 0 ? data : undefined,
   });
+  if (typeof window !== "undefined") window.__bnEditor = editor;
 
   useEffect(() => {
     if (!editable) return;

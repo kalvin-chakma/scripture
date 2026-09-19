@@ -5,7 +5,7 @@ import MarkdownEditor from "@uiw/react-markdown-editor";
 import { saveNote, getNote, updateNote } from "../services/api";
 import HomeLoader from "../components/loaders/homeLoader";
 import { RiArrowLeftSFill, RiSave2Fill } from "react-icons/ri";
-import Button from "../components/ui/Button";
+import Button from "../components/ui/button";
 import {
   markdownRemarkPlugins,
   markdownRemarkRehypeOptions,

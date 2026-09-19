@@ -7,6 +7,7 @@ import MockupWindow from "../components/landing-page/MockupWindow";
 import DashboardMockup from "../components/landing-page/DashboardMockup";
 import Eyebrow from "../components/landing-page/Eyebrow";
 import { navLinks, strip, sections, principles, mockups } from "../components/landing-page/content";
+import Button from "../components/ui/button";
 
 export default function Landing() {
   document.title = "Scripture | Notes, your way";
@@ -42,13 +43,14 @@ export default function Landing() {
           ))}
         </nav>
         <div className="flex items-center gap-3">
-          <button
+          <Button
+            variant="unstyled"
             onClick={toggleTheme}
             className="rounded-full p-2 text-lg text-black dark:text-white hover:bg-gray-200 dark:hover:bg-white/10 transition-colors duration-150"
             title="Toggle theme"
           >
             {theme === "dark" ? <BsLightbulbOffFill /> : <BsLightbulb />}
-          </button>
+          </Button>
           {isLoggedIn ? (
             <Link
               to="/dashboard"

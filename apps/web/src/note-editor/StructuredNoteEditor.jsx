@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import BlockNoteEditor from "../components/structured-editor/BlockNoteEditor";
 import { getNote, saveNote, updateNote } from "../services/api";
-import Button from "../components/ui/Button";
+import Button from "../components/ui/button";
 import { RiArrowLeftSFill, RiSave2Fill } from "react-icons/ri";
 import { useTheme } from "next-themes";
 import HomeLoader from "../components/loaders/homeLoader";

@@ -5,6 +5,7 @@ import {
   HiOutlineRectangleGroup,
   HiOutlineListBullet,
 } from "react-icons/hi2";
+import Button from "./button";
 
 const noteTypes = [
   { value: "markdown", label: "Markdown", icon: HiOutlineDocumentText },
@@ -42,9 +43,9 @@ export default function NoteForm({ onClose }) {
           {noteTypes.map((type) => {
             const Icon = type.icon;
             return (
-              <button
+              <Button
                 key={type.value}
-                type="button"
+                variant="unstyled"
                 onClick={() => setNoteType(type.value)}
                 className={`flex flex-col items-center gap-1.5 rounded-lg border px-2 py-3 text-xs font-medium transition-colors duration-150 cursor-pointer ${
                   noteType === type.value
@@ -54,7 +55,7 @@ export default function NoteForm({ onClose }) {
               >
                 <Icon className="w-5 h-5" />
                 {type.label}
-              </button>
+              </Button>
             );
           })}
         </div>
@@ -77,19 +78,20 @@ export default function NoteForm({ onClose }) {
 
       {/* Actions */}
       <div className="flex flex-col sm:flex-row justify-end sm:space-x-2 space-y-2 sm:space-y-0">
-        <button
-          type="button"
+        <Button
+          variant="unstyled"
           onClick={onClose}
           className="flex items-center justify-center bg-gray-100 text-sm font-semibold text-gray-700 dark:bg-white/10 dark:text-gray-300 px-4 py-2 rounded-lg transition-colors duration-150 hover:bg-gray-200 dark:hover:bg-white/20 cursor-pointer h-[4vh] w-full sm:w-24"
         >
           Cancel
-        </button>
-        <button
+        </Button>
+        <Button
           type="submit"
+          variant="unstyled"
           className="flex items-center justify-center bg-black text-sm font-semibold text-white px-4 py-2 rounded-lg shadow-sm transition-all duration-150 hover:bg-gray-800 hover:shadow-md cursor-pointer h-[4vh] w-full sm:w-24 dark:bg-white dark:text-black dark:hover:bg-gray-200"
         >
           Save
-        </button>
+        </Button>
       </div>
     </form>
   );

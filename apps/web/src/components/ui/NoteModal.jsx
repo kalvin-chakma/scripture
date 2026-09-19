@@ -1,6 +1,7 @@
 import { motion as Motion } from "framer-motion";
 import { HiOutlinePencilSquare, HiOutlineXMark } from "react-icons/hi2";
 import NoteForm from "./NoteForm";
+import Button from "./button";
 
 export default function NoteModal({ onClose }) {
   return (

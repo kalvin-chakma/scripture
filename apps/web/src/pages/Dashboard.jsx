@@ -10,6 +10,7 @@ import {
   HiOutlineRectangleGroup,
   HiOutlineListBullet,
 } from "react-icons/hi2";
+import Button from "../components/ui/button";
 
 const noteTypeIcons = {
   markdown: HiOutlineDocumentText,
@@ -136,8 +137,8 @@ export default function Dashboard() {
                             </div>
                           </Link>
 
-                          <button
-                            type="button"
+                          <Button
+                            variant="unstyled"
                             onClick={async () => {
                               try {
                                 await deleteNote(note.id);
@@ -163,7 +164,7 @@ export default function Dashboard() {
                             className="flex-shrink-0 flex items-center justify-center text-gray-500 transition-opacity duration-200 hover:text-red-600 opacity-0 group-hover:opacity-100 dark:text-gray-400 dark:hover:bg-red-500/10 dark:hover:text-red-400"
                           >
                             <RiDeleteBin5Fill className="h-3.5 w-3.5" />
-                          </button>
+                          </Button>
                         </div>
                       </div>
                     </div>
